@@ -1,0 +1,442 @@
+.popular-tags {
+  align-items: flex-start;
+  border-radius: 16px;
+  display: flex;
+  gap: 10px;
+  padding: 20px 25px 20px 20px;
+  position: relative;
+  width: 210px;
+}
+
+.popular-tags .div {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 20px;
+  margin-right: -10px;
+  position: relative;
+}
+
+.popular-tags .title {
+  align-items: flex-end;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 3px;
+  position: relative;
+}
+
+.popular-tags .text-wrapper {
+  font-family: var(--semibold-16-font-family);
+  font-size: var(--semibold-16-font-size);
+  font-style: var(--semibold-16-font-style);
+  font-weight: var(--semibold-16-font-weight);
+  letter-spacing: var(--semibold-16-letter-spacing);
+  line-height: var(--semibold-16-line-height);
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .tags {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+.popular-tags .tag {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  position: relative;
+}
+
+.popular-tags .icon {
+  align-items: flex-start;
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  padding: 6px;
+  position: relative;
+}
+
+.popular-tags .instance-node {
+  height: 20px !important;
+  position: relative !important;
+  width: 20px !important;
+}
+
+.popular-tags .name {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  position: relative;
+}
+
+.popular-tags .javascript {
+  font-family: var(--semibold-12-font-family);
+  font-size: var(--semibold-12-font-size);
+  font-style: var(--semibold-12-font-style);
+  font-weight: var(--semibold-12-font-weight);
+  letter-spacing: var(--semibold-12-letter-spacing);
+  line-height: var(--semibold-12-line-height);
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .element-posted-by {
+  font-family: var(--regular-10-font-family);
+  font-size: var(--regular-10-font-size);
+  font-style: var(--regular-10-font-style);
+  font-weight: var(--regular-10-font-weight);
+  letter-spacing: var(--regular-10-letter-spacing);
+  line-height: var(--regular-10-line-height);
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .bitcoin-wrapper {
+  align-items: flex-start;
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 10px;
+  padding: 6px;
+  position: relative;
+}
+
+.popular-tags .bitcoin {
+  font-family: var(--semibold-12-font-family);
+  font-size: var(--semibold-12-font-size);
+  font-style: var(--semibold-12-font-style);
+  font-weight: var(--semibold-12-font-weight);
+  letter-spacing: var(--semibold-12-letter-spacing);
+  line-height: var(--semibold-12-line-height);
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .element-posted {
+  font-family: var(--regular-10-font-family);
+  font-size: var(--regular-10-font-size);
+  font-style: var(--regular-10-font-style);
+  font-weight: var(--regular-10-font-weight);
+  letter-spacing: var(--regular-10-letter-spacing);
+  line-height: var(--regular-10-line-height);
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .design-wrapper {
+  align-items: flex-start;
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  padding: 6px;
+  position: relative;
+}
+
+.popular-tags .design {
+  font-family: var(--semibold-12-font-family);
+  font-size: var(--semibold-12-font-size);
+  font-style: var(--semibold-12-font-style);
+  font-weight: var(--semibold-12-font-weight);
+  letter-spacing: var(--semibold-12-letter-spacing);
+  line-height: var(--semibold-12-line-height);
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .element-trending-in {
+  font-family: var(--regular-10-font-family);
+  font-size: var(--regular-10-font-size);
+  font-style: var(--regular-10-font-style);
+  font-weight: var(--regular-10-font-weight);
+  letter-spacing: var(--regular-10-letter-spacing);
+  line-height: var(--regular-10-line-height);
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .blogging-wrapper {
+  align-items: flex-start;
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  padding: 6px;
+  position: relative;
+}
+
+.popular-tags .blogging {
+  font-family: var(--semibold-12-font-family);
+  font-size: var(--semibold-12-font-size);
+  font-style: var(--semibold-12-font-style);
+  font-weight: var(--semibold-12-font-weight);
+  letter-spacing: var(--semibold-12-letter-spacing);
+  line-height: var(--semibold-12-line-height);
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .p {
+  font-family: var(--regular-10-font-family);
+  font-size: var(--regular-10-font-size);
+  font-style: var(--regular-10-font-style);
+  font-weight: var(--regular-10-font-weight);
+  letter-spacing: var(--regular-10-letter-spacing);
+  line-height: var(--regular-10-line-height);
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .tutorial-wrapper {
+  align-items: flex-start;
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  padding: 6px;
+  position: relative;
+}
+
+.popular-tags .tutorial {
+  font-family: var(--semibold-12-font-family);
+  font-size: var(--semibold-12-font-size);
+  font-style: var(--semibold-12-font-style);
+  font-weight: var(--semibold-12-font-weight);
+  letter-spacing: var(--semibold-12-letter-spacing);
+  line-height: var(--semibold-12-line-height);
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .element-trending-in-2 {
+  font-family: var(--regular-10-font-family);
+  font-size: var(--regular-10-font-size);
+  font-style: var(--regular-10-font-style);
+  font-weight: var(--regular-10-font-weight);
+  letter-spacing: var(--regular-10-letter-spacing);
+  line-height: var(--regular-10-line-height);
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .seo-wrapper {
+  align-items: flex-start;
+  border-radius: 4px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  padding: 6px;
+  position: relative;
+}
+
+.popular-tags .seo {
+  font-family: var(--semibold-12-font-family);
+  font-size: var(--semibold-12-font-size);
+  font-style: var(--semibold-12-font-style);
+  font-weight: var(--semibold-12-font-weight);
+  letter-spacing: var(--semibold-12-letter-spacing);
+  line-height: var(--semibold-12-line-height);
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags .element-posted-by-2 {
+  font-family: var(--regular-10-font-family);
+  font-size: var(--regular-10-font-size);
+  font-style: var(--regular-10-font-style);
+  font-weight: var(--regular-10-font-weight);
+  letter-spacing: var(--regular-10-letter-spacing);
+  line-height: var(--regular-10-line-height);
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.popular-tags.off {
+  background-color: var(--secondary-colorbackground);
+}
+
+.popular-tags.on {
+  background-color: var(--dark-3);
+}
+
+.popular-tags.off .text-wrapper {
+  color: var(--secondary-colorsecondary-2);
+}
+
+.popular-tags.on .text-wrapper {
+  color: var(--secondary-colorbackground-2);
+}
+
+.popular-tags.off .icon {
+  background-color: var(--yellowyellow-10);
+}
+
+.popular-tags.on .icon {
+  background-color: #5a4f43;
+}
+
+.popular-tags.off .javascript {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .javascript {
+  color: var(--secondary-colorbackground-2);
+}
+
+.popular-tags.off .element-posted-by {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .element-posted-by {
+  color: var(--secondary-colorsecondary-3);
+}
+
+.popular-tags.off .bitcoin-wrapper {
+  background-color: var(--redred-10);
+}
+
+.popular-tags.on .bitcoin-wrapper {
+  background-color: #473e3b;
+}
+
+.popular-tags.off .bitcoin {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .bitcoin {
+  color: var(--secondary-colorbackground-2);
+}
+
+.popular-tags.off .element-posted {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .element-posted {
+  color: var(--secondary-colorsecondary-3);
+}
+
+.popular-tags.off .design-wrapper {
+  background-color: var(--blueblue-10);
+}
+
+.popular-tags.on .design-wrapper {
+  background-color: #444f5e;
+}
+
+.popular-tags.off .design {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .design {
+  color: var(--secondary-colorbackground-2);
+}
+
+.popular-tags.off .element-trending-in {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .element-trending-in {
+  color: var(--secondary-colorsecondary-3);
+}
+
+.popular-tags.off .blogging-wrapper {
+  background-color: var(--yellowyellow-10);
+}
+
+.popular-tags.on .blogging-wrapper {
+  background-color: #574d42;
+}
+
+.popular-tags.off .blogging {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .blogging {
+  color: var(--secondary-colorbackground-2);
+}
+
+.popular-tags.off .p {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .p {
+  color: var(--secondary-colorsecondary-3);
+}
+
+.popular-tags.off .tutorial-wrapper {
+  background-color: var(--greengreen-10);
+}
+
+.popular-tags.on .tutorial-wrapper {
+  background-color: #335148;
+}
+
+.popular-tags.off .tutorial {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .tutorial {
+  color: var(--secondary-colorbackground-2);
+}
+
+.popular-tags.off .element-trending-in-2 {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .element-trending-in-2 {
+  color: var(--secondary-colorsecondary-3);
+}
+
+.popular-tags.off .seo-wrapper {
+  background-color: var(--purplepurple-10);
+}
+
+.popular-tags.on .seo-wrapper {
+  background-color: #45475b;
+}
+
+.popular-tags.off .seo {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .seo {
+  color: var(--secondary-colorbackground-2);
+}
+
+.popular-tags.off .element-posted-by-2 {
+  color: var(--secondary-colorsecondary-4);
+}
+
+.popular-tags.on .element-posted-by-2 {
+  color: var(--secondary-colorsecondary-3);
+}

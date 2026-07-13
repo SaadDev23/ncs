@@ -1,0 +1,24 @@
+.button {
+  all: unset;
+  align-items: flex-start;
+  background-color: var(--redred-80);
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: inline-flex;
+  gap: 10px;
+  padding: 12px 16px;
+  position: relative;
+}
+
+.button .create-post {
+  color: var(--secondary-colorbackground);
+  font-family: "Rubik", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}

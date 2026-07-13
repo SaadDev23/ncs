@@ -1,0 +1,76 @@
+/* // import styled, { keyframes } from 'styled-components';
+
+// const slideIn = keyframes`
+//   from {
+//     transform: translateX(100%);
+//   }
+//   to {
+//     transform: translateX(0);
+//   }
+//   ;
+// `;
+
+// const slideOut = keyframes`
+//   from {
+//     transform: translateX(0);
+//   }
+//   to {
+//     transform: translateX(300%);
+//   }
+// `;
+
+// export const NotificationWrapper = styled.div<{ isVisible: boolean; isSuccess?: boolean }>`
+//   position: fixed;
+//   top: 120px;
+//   right: 30px;
+//   animation: ${({ isVisible }) => (isVisible ? slideIn : slideOut)} 0.5s ease-in-out forwards;
+//   transition: visibility 0.5s ease-in-out;
+//   visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+//   background: #fff;
+//   box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.25);
+//   border-radius: 16px;
+//   border-bottom: ${({ isSuccess }) => `6px solid ${isSuccess ? '#00FEB9' : 'red'}`};
+//   padding: 20px;
+//   text-align: center;
+// `; */
+
+/* styled.css */
+/* Keyframes */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+
+/* Styles */
+.NotificationWrapper {
+  position: fixed;
+  top: 120px;
+  right: 30px;
+  animation: slideIn 0.5s ease-in-out forwards;
+  transition: visibility 0.5s ease-in-out;
+  visibility: visible;
+  background: #fff;
+  box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  border-bottom: 6px solid red; /* Default color, adjust as needed */
+  padding: 20px;
+  text-align: center;
+}
+
+.NotificationWrapper.slideOut {
+  animation: slideOut 0.5s ease-in-out forwards;
+  visibility: hidden;
+}

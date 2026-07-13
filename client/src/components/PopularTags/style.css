@@ -1,0 +1,212 @@
+.popular-tags {
+  align-items: flex-start;
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: 10px;
+  padding: 14px;
+  width: 100% !important;
+}
+
+.popular-tags .div {
+  align-items: flex-start;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.popular-tags .title {
+  align-items: flex-end;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.popular-tags .text-wrapper {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.popular-tags .tags {
+  align-items: flex-start;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.popular-tags .tag {
+  align-items: flex-start;
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  padding: 5px 6px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+  cursor: pointer;
+}
+
+.popular-tags .tag:hover {
+  background: var(--bg-hover);
+}
+
+.popular-tags .icon,
+.popular-tags .bitcoin-wrapper,
+.popular-tags .design-wrapper,
+.popular-tags .blogging-wrapper,
+.popular-tags .tutorial-wrapper,
+.popular-tags .seo-wrapper {
+  align-items: center;
+  border-radius: 5px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  padding: 4px;
+  height: 24px;
+  width: 24px;
+}
+
+.popular-tags .instance-node {
+  height: 14px !important;
+  width: 14px !important;
+}
+
+.popular-tags .name {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.popular-tags .javascript,
+.popular-tags .bitcoin,
+.popular-tags .design-2,
+.popular-tags .blogging,
+.popular-tags .tutorial,
+.popular-tags .seo {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.popular-tags .element-posted-by,
+.popular-tags .element-posted,
+.popular-tags .element-trending-in,
+.popular-tags .element-trending-in-2,
+.popular-tags .element-posted-by-2 {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.tag-location {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  margin: 0;
+}
+
+/* Dark mode */
+.popular-tags.off {
+  background: transparent;
+  border: none;
+}
+
+.popular-tags.on {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px;
+}
+
+.popular-tags.on .text-wrapper {
+  color: var(--text-muted);
+}
+
+.popular-tags.on .icon {
+  background: rgba(234, 148, 44, 0.12);
+}
+
+.popular-tags.on .javascript {
+  color: var(--text-primary);
+}
+
+.popular-tags.on .element-posted-by {
+  color: var(--text-muted);
+}
+
+.popular-tags.on .bitcoin-wrapper {
+  background: rgba(239, 99, 86, 0.12);
+}
+
+.popular-tags.on .bitcoin {
+  color: var(--text-primary);
+}
+
+.popular-tags.on .element-posted {
+  color: var(--text-muted);
+}
+
+.popular-tags.on .design-wrapper {
+  background: rgba(85, 161, 255, 0.12);
+}
+
+.popular-tags.on .design-2 {
+  color: var(--text-primary);
+}
+
+.popular-tags.on .element-trending-in {
+  color: var(--text-muted);
+}
+
+.popular-tags.on .blogging-wrapper {
+  background: rgba(255, 201, 99, 0.12);
+}
+
+.popular-tags.on .blogging {
+  color: var(--text-primary);
+}
+
+.popular-tags.on .p {
+  color: var(--text-muted);
+}
+
+.popular-tags.on .tutorial-wrapper {
+  background: rgba(80, 200, 120, 0.12);
+}
+
+.popular-tags.on .tutorial {
+  color: var(--text-primary);
+}
+
+.popular-tags.on .element-trending-in-2 {
+  color: var(--text-muted);
+}
+
+.popular-tags.on .seo-wrapper {
+  background: rgba(150, 120, 220, 0.12);
+}
+
+.popular-tags.on .seo {
+  color: var(--text-primary);
+}
+
+.popular-tags.on .element-posted-by-2 {
+  color: var(--text-muted);
+}

@@ -1,0 +1,188 @@
+.check {
+  border-radius: 2px;
+  height: 12px;
+  width: 12px;
+}
+
+.check .icons-navigation {
+  height: 8px !important;
+  left: 1px !important;
+  position: absolute !important;
+  top: 1px !important;
+  width: 8px !important;
+}
+
+.check.selected {
+  border-color: #e6e6e6;
+}
+
+.check.intermediate.disabled {
+  border-color: #e6e6e6;
+}
+
+.check.enabled.exclude {
+  border-color: #c53c3c;
+}
+
+.check.hover.exclude {
+  border-color: #c61818;
+}
+
+.check.enabled.intermediate {
+  border-color: #0a8bef;
+}
+
+.check.checked-true.selected {
+  background-color: #e6e6e6;
+  border: 2px solid;
+}
+
+.check.exclusion-box.enabled {
+  border: 1px solid;
+  border-color: #c53c3c;
+}
+
+.check.hover.intermediate {
+  border-color: #0575cb;
+}
+
+.check.exclusion-box.pressed {
+  background-color: var(--statusr-10);
+}
+
+.check.hover.checked-false {
+  background-color: #ffffff;
+}
+
+.check.enabled.checked-false {
+  background-color: #ffffff;
+}
+
+.check.checked-true.intermediate {
+  border: 2px solid;
+}
+
+.check.exclusion-box.disabled {
+  border: 1px solid;
+  border-color: #f4d8d8;
+}
+
+.check.checked-true.pressed {
+  border: 2px solid;
+}
+
+.check.exclude.disabled {
+  border-color: #f4d8d8;
+}
+
+.check.exclusion-box.hover {
+  border: 1px solid;
+  border-color: #c61818;
+}
+
+.check.checked-false.disabled {
+  background-color: #ffffff;
+}
+
+.check.pressed.intermediate {
+  background-color: #0461aa;
+  border-color: #0461aa;
+}
+
+.check.checked-true.exclude {
+  border: 2px solid;
+}
+
+.check.checked-true.selection-box {
+  border: 2px solid;
+}
+
+.check.pressed.selected {
+  background-color: #e6e6e6;
+}
+
+.check.pressed.selection-box {
+  border-color: #0461aa;
+}
+
+.check.pressed.exclude {
+  background-color: #a50a0a;
+  border-color: #a50a0a;
+}
+
+.check.checked-true.pressed.selection-box {
+  background-color: #0461aa;
+}
+
+.check.checked-true.hover.selection-box {
+  background-color: #0575cb;
+  border-color: #0575cb;
+}
+
+.check.hover.checked-false.selection-box {
+  border: 1px solid;
+  border-color: #0a8bef;
+}
+
+.check.checked-true.enabled.intermediate {
+  background-color: #0a8bef;
+}
+
+.check.enabled.checked-false.selection-box {
+  border: 1px solid;
+  border-color: #dadada;
+}
+
+.check.checked-true.hover.intermediate {
+  background-color: #0575cb;
+}
+
+.check.checked-true.enabled.exclude {
+  background-color: #c53c3c;
+}
+
+.check.checked-true.enabled.selection-box {
+  background-color: #0a8bef;
+  border-color: #0a8bef;
+}
+
+.check.checked-true.exclude.disabled {
+  background-color: #f4d8d8;
+}
+
+.check.checked-true.hover.exclude {
+  background-color: #c61818;
+}
+
+.check.pressed.checked-false.selection-box {
+  background-color: #f1f9ff;
+  border: 1px solid;
+}
+
+.check.checked-true.intermediate.disabled {
+  background-color: #e6e6e6;
+}
+
+.check.checked-true .icon-checkbox {
+  height: 10px;
+  left: -1px;
+  position: relative;
+  top: -1px;
+  width: 10px;
+}
+
+.check.exclusion-box .icon-checkbox {
+  background-color: var(--statusr-10);
+  border-color: #a60b0b;
+}
+
+.check.checked-false .icon-checkbox {
+  border: 1px solid;
+  border-radius: 2px;
+  height: 12px;
+}
+
+.check.disabled.selection-box .icon-checkbox {
+  background-color: var(--backgroundd-80);
+  border-color: var(--backgroundpure-white);
+}

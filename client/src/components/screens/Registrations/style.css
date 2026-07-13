@@ -1,0 +1,285 @@
+:root {
+  --white: #ffffff;
+  /* Add other global variables if necessary */
+}
+
+
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.register {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  background-color: rgb(30, 37, 43);
+  min-height: 100vh;
+  padding: 20px
+}
+
+.register .text-wrapper {
+  color: var(--white);
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+}
+
+.register .table {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: center;
+  position: relative;
+}
+
+.register .ranking {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  width: 1000px;
+}
+
+.register .frame {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 88px;
+  margin-right: -7px;
+  padding: 8px;
+  position: relative;
+}
+
+.register .div {
+  color: var(--white);
+  font-family: var(--paragraf-regular-font-family);
+  font-size: var(--paragraf-regular-font-size);
+  font-style: var(--paragraf-regular-font-style);
+  font-weight: var(--paragraf-regular-font-weight);
+  letter-spacing: var(--paragraf-regular-letter-spacing);
+  line-height: var(--paragraf-regular-line-height);
+  margin-top: -1px;
+  position: relative;
+  width: 412px;
+}
+
+.register .frame-2 {
+  align-items: center;
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+  position: relative;
+  width: 491px;
+}
+
+.register .text-wrapper-2 {
+  color: var(--white);
+  font-family: var(--paragraf-regular-font-family);
+  font-size: var(--paragraf-regular-font-size);
+  font-style: var(--paragraf-regular-font-style);
+  font-weight: var(--paragraf-regular-font-weight);
+  letter-spacing: var(--paragraf-regular-letter-spacing);
+  line-height: var(--paragraf-regular-line-height);
+  margin-top: -1px;
+  position: relative;
+  text-align: center;
+  width: 200px;
+}
+
+.register .standing {
+  align-items: center;
+  background-color: #493f6966;
+  border-radius: 8px;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 88px;
+  justify-content: center;
+  padding: 16px 8px;
+  position: relative;
+  width: 1000px;
+}
+
+.register .club {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  position: relative;
+  width: 413px;
+}
+
+.register .text-wrapper-3 {
+  color: var(--white);
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  text-align: center;
+  width: 15px;
+}
+
+.register .logo {
+  height: 32px;
+  position: relative;
+  width: 32px;
+}
+
+.register .text-wrapper-4 {
+  color: var(--white);
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  width: 334px;
+}
+
+.register .poin {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  position: relative;
+  width: 404px;
+}
+
+.register .logo-2 {
+  /* background-image: */
+  background-position: 50% 50%;
+  background-size: cover;
+  height: 32px;
+  position: relative;
+  width: 32px;
+}
+
+.register .poin-2 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  justify-content: center;
+  position: relative;
+}
+
+.register .image {
+  height: 32px;
+  left: 4px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 24px;
+}
+
+.register .logo-3 {
+  /* background-image: */
+  background-position: 50% 50%;
+  background-size: cover;
+  height: 32px;
+  position: relative;
+  width: 32px;
+}
+
+.register .imgae {
+  height: 32px;
+  left: 2px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 29px;
+}
+
+.register .standing-2 {
+  align-items: center;
+  background-color: #ff440166;
+  border-radius: 8px;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 88px;
+  justify-content: center;
+  padding: 16px 8px;
+  position: relative;
+  width: 1000px;
+}
+
+.register .img {
+  height: 32px;
+  left: 3px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 27px;
+}
+
+@media (max-width: 768px) {
+  .register {
+    gap: 20px;
+    padding: 20px 16px 40px;
+  }
+
+  .register .table,
+  .register .ranking,
+  .register .standing,
+  .register .standing-2 {
+    width: 100%;
+  }
+
+  .register .frame {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-right: 0;
+    padding: 8px 0;
+    width: 100%;
+  }
+
+  .register .div,
+  .register .frame-2,
+  .register .club,
+  .register .poin {
+    width: 100%;
+  }
+
+  .register .frame-2 {
+    justify-content: space-between;
+  }
+
+  .register .text-wrapper-2 {
+    width: auto;
+  }
+
+  .register .standing,
+  .register .standing-2 {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .register .club {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .register .text-wrapper-4 {
+    flex: 1 1 150px;
+    overflow-wrap: anywhere;
+    width: auto;
+  }
+
+  .register .poin {
+    justify-content: space-between;
+  }
+}

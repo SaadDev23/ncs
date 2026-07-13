@@ -1,0 +1,44 @@
+#back {
+  background-color: #FF6934;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+thead{
+  text-align:justify
+}
+
+th{
+border: none;   
+}
+
+td {
+  border-bottom: 1px solid white;
+}
+
+@media (max-width: 768px) {
+  .past-papers-page {
+    padding: 16px !important;
+  }
+
+  .past-papers-table-wrap {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    width: 100% !important;
+  }
+
+  .past-papers-table {
+    min-width: 620px;
+  }
+
+  .past-papers-table td,
+  .past-papers-table th {
+    padding: 0 8px;
+  }
+
+  .past-papers-table a {
+    overflow-wrap: anywhere;
+  }
+}

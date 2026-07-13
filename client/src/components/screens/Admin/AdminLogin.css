@@ -1,0 +1,112 @@
+.admin-login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #f3f5f9;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.admin-login-title {
+  margin: 0 0 1.5rem;
+  font-size: 2rem;
+  text-align: center;
+  color: #1f1f1f;
+}
+
+.admin-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  color: #4b4b4b;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #d8d8d8;
+  border-radius: 14px;
+  background: #fafbfc;
+  color: #1f1f1f;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: #7f265b;
+}
+
+.login-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #5b5b5b;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.checkbox-field input {
+  margin: 0;
+}
+
+.forgot-text {
+  color: #7f265b;
+  font-weight: 600;
+}
+
+.login-submit {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 1rem 1.15rem;
+  font-size: 1rem;
+  font-weight: 700;
+  background: #7f265b;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.login-submit:hover {
+  background: #612046;
+}
+
+@media (max-width: 480px) {
+  .admin-login-card {
+    padding: 1.5rem;
+  }
+
+  .admin-login-title {
+    font-size: 1.75rem;
+  }
+}

@@ -1,0 +1,639 @@
+.box {
+  height: 100vh !important;
+  width: 100% !important;
+  background-color: #1E252B;
+  padding-bottom: 1200px
+}
+
+
+.box .profile {
+  height: 1200px;
+  width: 0;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  margin: 0 auto;
+  margin-left: 33%;
+}
+
+.box .overlap {
+  border-radius: 20px;
+  height: 910px;
+  position: relative;
+}
+
+.box .haha {
+  background-color: #292b2f;
+  border-radius: 20px;
+  height: 910px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 821px;
+}
+
+.box .overlap-group {
+  background-color: #17181a;
+  border-radius: 15px;
+  height: 465px;
+  left: 20px;
+  position: absolute;
+  top: 420px;
+  width: 780px;
+}
+
+.box .rectangle {
+  background-color: #202225;
+  border-radius: 6px;
+  height: 44px;
+  left: 32px;
+  position: relative;
+  top: 417px;
+  width: 271px;
+}
+
+.box .banner-DDD {
+  height: 273px;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 821px;
+}
+
+.box .spotfy {
+  height: 37px;
+  left: 66px;
+  position: absolute;
+  top: 816px;
+  width: 92px;
+}
+
+.box .c1 {
+  height: 37px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 31px;
+}
+
+.box .text-wrapper {
+  color: #ffffff;
+  font-family: "Poppins", Helvetica;
+  font-size: 12px;
+  font-weight: 700;
+  left: 41px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 10px;
+  width: 49px;
+}
+
+.box .avatar {
+  background-color: #292b2f;
+  border-radius: 97.54px/96.9px;
+  height: 194px;
+  left: 20px;
+  position: absolute;
+  top: 187px;
+  width: 195px;
+}
+
+.box .img {
+  height: 165px;
+  left: 15px;
+  object-fit: cover;
+  position: absolute;
+  top: 13px;
+  width: 166px;
+}
+
+.box .nick {
+  height: 51px;
+  left: 47px;
+  position: absolute;
+  top: 450px;
+  width: 286px;
+}
+
+.box .div {
+  height: 51px;
+  position: relative;
+  width: 282px;
+}
+
+.box .text-wrapper-2 {
+  color: #ffffff;
+  font-family: "Poppins", Helvetica;
+  font-size: 30px; /* Adjusted font size */
+  font-weight: 500;
+  height: 51px;
+  left: 0;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 0;
+  width: 151px;
+}
+.avatar .img {
+  border-radius: 97.54px/96.9px;
+  height: 194px;
+  left: 20px;
+  position: absolute;
+  top: 187px;
+  width: 195px;
+  margin-top: -190px;
+  margin-left: -20px;
+}
+
+#profile-picture-button {
+  background-color: #FF6934;
+  cursor: pointer;
+  color: white;
+  padding: 9px 4px ;
+  border: none;
+  border-radius: 5px;
+  margin-top: -75px;
+  margin-bottom: 50px;
+  width: fit-content;
+  margin-left: 180px;
+  /* padding-right: 70px; */
+  line-height: 1;
+}
+#profile-picture-button-two {
+  background-color: #FF6934;
+  cursor: pointer;
+  color: white;
+  padding: 10px 10px ;
+  border: none;
+  border-radius: 5px;
+  margin-top: -45px;
+  margin-bottom: 50px;
+  width: fit-content;
+  margin-left: 150px;
+  /* padding-right: 70px; */
+  line-height: 1;
+}
+#update-profile {
+  background-color: #FF6934;
+  color: white;
+  padding: 10px 10px ;
+  border: none;
+  border-radius: 5px;
+  margin-top: -75px;
+  margin-bottom: 10px;
+  width: fit-content;
+  margin-left: 640px;
+
+  /* padding-right: 70px; */
+  line-height: 1;
+}
+
+.box .text-wrapper-3 {
+  color: #b9bbbe;
+  font-family: "Poppins", Helvetica;
+  font-size: 36px; /* Adjusted font size */
+  font-weight: 700;
+  height: 51px;
+  left: 150px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 0;
+  width: 171px;
+}
+
+.box .profilee {
+  height: 140px;
+  left: 47px; /* Adjusted left position */
+  position: absolute; /* Changed from fixed to absolute */
+  top: 593px; /* Adjusted top position */
+  width: 144px;
+}
+
+
+.box .text-wrapper-4 {
+  color: #b9bbbe;
+  font-family: "Poppins-Bold", Helvetica;
+  font-size: 14px;
+  font-weight: 700;
+  height: 22px;
+  left: 0;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 0;
+  width: 98px;
+}
+
+.box .text-wrapper-5 {
+  color: #b9bbbe;
+  font-family: "Poppins-Bold", Helvetica;
+  font-size: 15px;
+  font-weight: 700;
+  height: 22px;
+  left: 0;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 94px;
+  width: 98px;
+}
+
+.box .about {
+  color: #dcddde;
+  font-family: "Poppins-Medium", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  left: 0;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 34px;
+  width: 136px;
+}
+
+.box .note-click {
+  color: #dcddde;
+  font-family: "Poppins-Medium", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  left: 5px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 125px;
+  width: 107px;
+}
+
+.box .all-line {
+  height: 209px;
+  left: 47px;
+  position: absolute;
+  top: 571px;
+  width: 726px;
+}
+
+.box .line-wrapper {
+  background-image: url(../../../../public/imgProfile/line-1.svg);
+  background-position: 50% 50%;
+  background-size: cover;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  top: -1px;
+  width: 726px;
+}
+
+.box .line {
+  height: 1px;
+  left: 95px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 85px;
+}
+
+.box .line-2 {
+  height: 1px;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 208px;
+  width: 726px;
+}
+
+.box .element-text {
+  height: 22px;
+  left: 105px;
+  position: absolute;
+  top: 543px;
+  width: 489px;
+}
+
+.box .text-wrapper-6 {
+  color: #ffffff;
+  font-family: "Poppins", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  height: 22px;
+  left: 0;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 33%;
+  cursor: pointer;
+}
+
+.box .text-wrapper-7 {
+  color: #ffffff;
+  font-family: "Poppins", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  height: 22px;
+  left: 225px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 33%;
+  cursor: pointer;
+}
+
+.box .text-wrapper-8 {
+  color: #ffffff;
+  font-family: "Poppins", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  height: 22px;
+  left: 460px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 33%;
+  cursor: pointer;
+}
+
+/* Add this styling to your CSS file */
+
+/* Add this styling to your CSS file */
+
+/* ... (existing styling) ... */
+
+.box {
+  height: 100vh !important;
+  width: 100% !important;
+  background-color: rgb(30, 37, 43);
+  padding-bottom: 1200px;
+}
+
+.box .profile {
+  height: 1200px;
+  width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-left: 33%;
+}
+
+/* ... (existing styling) ... */
+
+.profile-edit-modal {
+  background-color: rgb(30, 37, 43);
+  border-radius: 10px;
+  padding: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.profile-edit-modal input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff; /* Assuming you want a white background for the input */
+  color: rgb(30, 37, 43); /* Assuming you want dark text color for the input */
+}
+
+.profile-edit-modal button {
+  background-color: #FF6934;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.profile-edit-modal button:last-child {
+  background-color: #dc3545;
+}
+
+/* ... (existing styling) ... */
+
+@media (max-width: 768px) {
+  .box {
+    height: auto !important;
+    min-height: calc(100dvh - 56px);
+    padding: 20px 12px 40px;
+  }
+
+  .box .profile {
+    display: block;
+    height: auto;
+    margin: 0;
+    width: 100%;
+  }
+
+  .box .overlap {
+    height: 680px;
+    margin: 0 auto;
+    max-width: 560px;
+    width: 100%;
+  }
+
+  .box .haha {
+    height: 100%;
+    width: 100%;
+  }
+
+  .box .banner-DDD {
+    height: 210px;
+    width: 100%;
+  }
+
+  .box .avatar {
+    border-radius: 60px;
+    height: 120px;
+    left: 24px;
+    top: 145px;
+    width: 120px;
+  }
+
+  .box .avatar .img {
+    border-radius: inherit;
+    height: 100%;
+    left: 0;
+    margin: 0;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  .box .nick {
+    left: 24px;
+    top: 278px;
+    width: calc(100% - 48px);
+  }
+
+  .box .text-wrapper-2 {
+    font-size: 24px;
+    width: 100%;
+  }
+
+  .box .overlap-group {
+    align-items: flex-start;
+    bottom: 20px;
+    display: flex;
+    gap: 8px;
+    height: auto;
+    left: 12px;
+    padding: 16px;
+    top: 330px;
+    width: calc(100% - 24px);
+  }
+
+  #profile-picture-button,
+  #profile-picture-button-two,
+  #update-profile {
+    margin: 0;
+  }
+
+  #update-profile {
+    margin-left: auto;
+  }
+
+  .box .rectangle {
+    display: none;
+  }
+
+  .box .element-text {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    left: 24px;
+    top: 385px;
+    width: calc(100% - 48px);
+  }
+
+  .box .element-text .text-wrapper-6,
+  .box .element-text .text-wrapper-7,
+  .box .element-text .text-wrapper-8 {
+    left: auto;
+    position: static;
+    width: auto;
+  }
+
+  .box .all-line {
+    height: 1px;
+    left: 24px;
+    top: 416px;
+    width: calc(100% - 48px);
+  }
+
+  .box .line-wrapper,
+  .box .line-2 {
+    width: 100%;
+  }
+
+  .box .line-2 {
+    display: none;
+  }
+
+  .box .line {
+    left: 10% !important;
+  }
+
+  .box .overlap:has(.element-text .text-wrapper-7.active) .line {
+    left: 46% !important;
+  }
+
+  .box .overlap:has(.element-text .text-wrapper-8.active) .line {
+    left: calc(90% - 85px) !important;
+  }
+
+  .box .profilee {
+    height: auto;
+    left: 24px;
+    top: 452px;
+    width: calc(100% - 48px);
+  }
+
+  .box .profilee > .text-wrapper-7,
+  .box .profilee > .text-wrapper-8 {
+    height: auto;
+    left: auto;
+    position: static;
+    width: auto;
+  }
+
+  .box .about {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    width: 100%;
+  }
+
+  .box .spotfy {
+    bottom: 40px;
+    left: 28px;
+    top: auto;
+  }
+
+  .profile-edit-modal {
+    max-width: calc(100vw - 32px);
+    width: 420px;
+  }
+}
+
+@media (max-width: 420px) {
+  .box .overlap {
+    height: 650px;
+  }
+
+  .box .banner-DDD {
+    height: 190px;
+  }
+
+  .box .avatar {
+    height: 104px;
+    left: 20px;
+    top: 130px;
+    width: 104px;
+  }
+
+  .box .nick {
+    left: 20px;
+    top: 245px;
+    width: calc(100% - 40px);
+  }
+
+  .box .overlap-group {
+    bottom: 16px;
+    left: 8px;
+    padding: 12px;
+    top: 300px;
+    width: calc(100% - 16px);
+  }
+
+  .box .element-text {
+    left: 16px;
+    top: 345px;
+    width: calc(100% - 32px);
+  }
+
+  .box .all-line {
+    left: 16px;
+    top: 376px;
+    width: calc(100% - 32px);
+  }
+
+  .box .profilee {
+    left: 20px;
+    top: 410px;
+    width: calc(100% - 40px);
+  }
+
+  .box .spotfy {
+    bottom: 30px;
+    left: 24px;
+  }
+}

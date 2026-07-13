@@ -1,0 +1,359 @@
+.post {
+  align-items: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 22px;
+  width: 100%;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.post:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-elevated);
+}
+
+.post .main-4 {
+  align-items: flex-start;
+  display: flex;
+  gap: 14px;
+  width: 100%;
+}
+
+.post-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.post .post-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.post-status-dot {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 10px;
+  height: 10px;
+  background: #3ba55d;
+  border: 2px solid var(--bg-card);
+  border-radius: 50%;
+}
+
+.post .data {
+  align-items: flex-start;
+  display: flex;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.post .data-2 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.post .title-3 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.post .bitcoin-has-tumbled {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-primary);
+  margin: 0;
+  width: 100%;
+  word-break: break-word;
+}
+
+.post .tags-3 {
+  align-items: flex-start;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.post .div-wrapper,
+.post .tag-3,
+.post .tag-4 {
+  align-items: center;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  gap: 4px;
+  justify-content: center;
+  padding: 2px 8px;
+}
+
+.post .text-wrapper-5,
+.post .text-wrapper-6,
+.post .text-wrapper-7 {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.post .user {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.post .avatars {
+  background: #f0f1fe;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.post .memoji-boys {
+  height: 34px;
+  left: 6px;
+  position: absolute;
+  top: 3px;
+  width: 28px;
+}
+
+.post .name-3 {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.post .name-4 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.post .name-5 {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.post .pavel-gvay {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.post .ellipse {
+  background: var(--text-muted);
+  border-radius: 50%;
+  height: 3px;
+  width: 3px;
+}
+
+.post .element-weeks-ago {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.post .action {
+  align-items: center;
+  display: inline-flex;
+  gap: 14px;
+}
+
+.post .text-wrapper-8,
+.post .element-likes,
+.post .element-comments {
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.post:hover .element-likes,
+.post:hover .element-comments {
+  color: var(--text-secondary);
+}
+
+.post .love {
+  align-items: center;
+  border-radius: 50%;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.post .love:hover {
+  background: var(--accent-soft);
+}
+
+.post .love:active {
+  transform: scale(1.2);
+}
+
+/* Dark mode */
+.post.dark-32-off {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.post.dark-32-on {
+  background: var(--bg-card);
+  border-color: var(--border);
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.post.dark-32-off .bitcoin-has-tumbled { color: #111; }
+.post.dark-32-on .bitcoin-has-tumbled { color: var(--text-primary); }
+
+.post.dark-32-off .div-wrapper { background: #F4F6F8; }
+.post.dark-32-on .div-wrapper { background: rgba(255, 255, 255, 0.05); }
+
+.post.dark-32-off .text-wrapper-5 { color: #666; }
+.post.dark-32-on .text-wrapper-5 { color: var(--text-secondary); }
+
+.post.dark-32-off .tag-3 { background: #F4F6F8; }
+.post.dark-32-on .tag-3 { background: rgba(255, 255, 255, 0.05); }
+
+.post.dark-32-off .text-wrapper-6 { color: #666; }
+.post.dark-32-on .text-wrapper-6 { color: var(--text-secondary); }
+
+.post.dark-32-off .tag-4 { background: #F4F6F8; }
+.post.dark-32-on .tag-4 { background: rgba(255, 255, 255, 0.05); }
+
+.post.dark-32-off .text-wrapper-7 { color: #666; }
+.post.dark-32-on .text-wrapper-7 { color: var(--text-secondary); }
+
+.post.dark-32-off .pavel-gvay { color: #111; }
+.post.dark-32-on .pavel-gvay { color: var(--text-primary); }
+
+.post.dark-32-off .element-weeks-ago { color: #999; }
+.post.dark-32-on .element-weeks-ago { color: var(--text-muted); }
+
+.post.dark-32-off .text-wrapper-8,
+.post.dark-32-off .element-likes,
+.post.dark-32-off .element-comments { color: #999; }
+
+.post.dark-32-on .text-wrapper-8,
+.post.dark-32-on .element-likes,
+.post.dark-32-on .element-comments { color: var(--text-muted); }
+
+.post.dark-32-off .love { background: transparent; }
+.post.dark-32-on .love { background: transparent; }
+.post.dark-32-on .love:hover { background: var(--accent-soft); }
+
+/* Comments */
+.post-comments-section {
+  margin-top: 2px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  width: 100%;
+}
+
+.post-comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.post-comment-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 4px 0;
+}
+
+.post-comment-author {
+  font-weight: 600;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+.post-comment-text {
+  color: var(--text-secondary);
+}
+
+.post-comment-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.post-comment-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.post-comment-input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.post-comment-input::placeholder {
+  color: var(--text-muted);
+}
+
+.post-comment-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.post-comment-btn {
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.post-comment-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.post-comment-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.post-comment-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

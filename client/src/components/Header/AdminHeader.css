@@ -1,0 +1,354 @@
+#navbar.header{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: #1E252B;
+    /* gap: 10px; */
+    height: 83px;
+    /* padding: 20px 22px; */
+    position: relative;
+    width: 100%;
+  }
+  
+  #navbar .main{
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    gap: 130px !important;
+    height: 63px !important;
+    position: relative;
+    width: 1520px;
+    top: 10px;
+    padding: 0 !important;
+  }
+  
+  .header .div-2 {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 10px;
+    position: relative;
+  }
+  
+  .header .logo {
+    flex: 0 0 auto;
+    background-color: #ffffff;
+    border-radius: 5px;
+    position: relative;
+  }
+  
+  .header .hipnode {
+    color: #ffffff;
+    font-family: var(--bold-26-font-family);
+    font-size: 26px;
+    font-style: var(--bold-26-font-style);
+    font-weight: bold;
+    letter-spacing: var(--bold-26-letter-spacing);
+    line-height: 38px;
+    margin-top: -1px;
+    position: relative;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  
+  .header .main-2 {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap:70px;
+    position: relative;
+  }
+  
+  .header .icons {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 60px;
+    position: relative;
+  }
+  
+  .header .home-wrapper {
+    align-items: flex-start;
+    background-color: #FF4401;
+    border-radius: 7px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 10px;
+    padding: 10px;
+    position: relative;
+  }
+  
+  .header .icon-instance-node {
+    height: 20px !important;
+    position: relative !important;
+    width: 20px !important;
+  }
+  
+  .header .home-wrapper-2 {
+    align-items: flex-start;
+    background-color: #262D34;
+    border-radius: 7px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 10px;
+    padding: 10px;
+    position: relative;
+  }
+  
+  .header .group-instance {
+    background-color: #F4F6F8 !important;
+  }
+  
+  .header .design-component-instance-node {
+    border-color:#262D34!important;
+  }
+  
+  .header .search {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 58px;
+    justify-content: flex-end;
+    position: relative;
+  }
+  
+  .header .title-wrapper {
+    align-items: flex-start;
+    background-color: #2C353D;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 9px 20px;
+    position: relative;
+    width: 480px;
+  }
+  
+  .header .title {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 240px;
+    position: relative;
+  }
+  
+  .header .text-wrapper {
+    color: #858EAD;
+    font-family: var(--regular-14-font-family);
+    font-size: var(--regular-14-font-size);
+    font-style: var(--regular-14-font-style);
+    font-weight: var(--regular-14-font-weight);
+    letter-spacing: var(--regular-14-letter-spacing);
+    line-height: var(--regular-14-line-height);
+    margin-top: -1px;
+    position: relative;
+    width: 180px;
+  }
+  
+  .header .search-icon {
+    height: 20.5px !important;
+    margin-right: -0.5px !important;
+    position: relative !important;
+    width: 20.5px !important;
+  }
+  
+  .header .right-info {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 25px;
+    position: relative;
+  }
+  
+  .header .notification {
+    align-items: flex-start;
+    background-color: #2C353D;
+    border-radius: 7px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 10px;
+    padding: 10px;
+    position: relative;
+  }
+  
+  .header .name {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 16px;
+    position: relative;
+  }
+  
+  .header .profile-image {
+    border: 1px solid;
+    border-color: #ea942c;
+    border-radius: 8px;
+    height: 40px;
+    position: relative;
+    width: 40px;
+  }
+  
+  .header .mask-group-wrapper {
+    background-color: #f9dfc0;
+    border-radius: 6px;
+    height: 36px;
+    left: 0px;
+    position: relative;
+    top: 0px;
+    width: 35px;
+  }
+  
+  .header .mask-group {
+    height: 32px;
+    left: 2px;
+    position: absolute;
+    top: 1px;
+    width: 30px;
+  }
+  
+  .header .AR-jakir {
+    color: #F7F7F7;
+    font-family: var(--bold-16-font-family);
+    font-size: var(--bold-16-font-size);
+    font-style: var(--bold-16-font-style);
+    font-weight: var(--bold-16-font-weight);
+    letter-spacing: var(--bold-16-letter-spacing);
+    line-height: var(--bold-16-line-height);
+    position: relative;
+    width: 71px;
+    margin-right: 10px;
+  
+  }
+
+  
+  
+  /* Add this CSS to your header.css file or create a separate CSS file */
+  
+  /* Dropdown container */
+.header .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Dropdown button */
+  .header .dropbtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .header .dropbtn:focus {
+    outline: none;
+  }
+  
+  /* Dropdown content (hidden by default) */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #262D34; /* Background color for the dropdown */
+    min-width: 160px;
+    z-index: 1;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Dropdown links */
+  .dropdown-content a {
+    color: #ffffff;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .logout-button {
+    color: #ffffff;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+  }
+  
+  .logout-button:hover {
+    background-color: #FF6934;
+    color: #ffffff;
+  }
+  
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {
+    background-color: #FF6934; /* Background color on hover */
+    color: #ffffff;
+  }
+  
+  /* Show the dropdown content when hovering over the dropdown container */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  
+  a{
+    cursor: pointer;
+  }
+
+  .dashboard-option {
+    color: #ffffff;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+  }
+  
+  .dashboard-option:hover {
+    background-color: #FF6934;
+    color: #ffffff;
+  }
+
+  @media (max-width: 1024px) {
+    #navbar.header {
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    #navbar .main {
+      gap: 16px !important;
+      height: 56px !important;
+      max-width: 100%;
+      padding: 0 16px !important;
+      top: 0;
+      width: 100%;
+    }
+
+    .header .main-2,
+    .header .icons,
+    .header .search,
+    .header .right-info {
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header .title-wrapper,
+    .header .notification {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .header .hipnode,
+    .header .AR-jakir {
+      display: none;
+    }
+
+    .header .main-2,
+    .header .icons,
+    .header .search,
+    .header .right-info {
+      gap: 4px;
+    }
+
+    .header .home-wrapper,
+    .header .home-wrapper-2 {
+      padding: 7px;
+    }
+  }

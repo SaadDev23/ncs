@@ -1,0 +1,130 @@
+/* Dashboard Layout — Vercel/Discord inspired */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr 280px;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 100px;
+  background: var(--bg-primary);
+  min-height: calc(100vh - 56px);
+}
+
+.dashboard-layout .sidebar-left,
+.dashboard-layout .feed-main,
+.dashboard-layout .sidebar-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dashboard-layout .sidebar-left {
+  position: sticky;
+  top: 72px;
+  height: fit-content;
+}
+
+.dashboard-layout .feed-main {
+  min-width: 0;
+}
+
+.dashboard-layout .sidebar-right {
+  position: sticky;
+  top: 72px;
+  height: fit-content;
+}
+
+/* Feed wrapper */
+.feed-main .main-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feed-main .main-wrapper > div {
+  width: 100%;
+}
+
+/* Sidebar section cards */
+.dashboard-layout .meetups.dark-46-on,
+.dashboard-layout .popular-tags.on,
+.dashboard-layout .pinned-group.dark-18-on {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  width: 100% !important;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+/* Nested items inside sidebar cards should NOT be cards themselves */
+.dashboard-layout .meetups.dark-46-on .meetups.dark-46-on,
+.dashboard-layout .meetups.dark-46-on .popular-tags.on,
+.dashboard-layout .popular-tags.on .popular-tags.on {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  padding: 6px 0 !important;
+  width: 100% !important;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.dashboard-layout .meetups.dark-46-on .meetups.dark-46-on:last-child,
+.dashboard-layout .meetups.dark-46-on .popular-tags.on:last-child,
+.dashboard-layout .popular-tags.on .popular-tags.on:last-child {
+  border-bottom: none !important;
+}
+
+.dashboard-layout .meetups.dark-46-on:hover,
+.dashboard-layout .popular-tags.on:hover,
+.dashboard-layout .pinned-group.dark-18-on:hover {
+  border-color: var(--border-hover);
+}
+
+/* Section titles */
+.dashboard-layout .text-wrapper-9 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.dashboard-layout .text-wrapper-9 a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+.dashboard-layout .text-wrapper-9 a:hover {
+  color: var(--text-primary);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr 260px;
+    padding: 24px 20px 60px;
+    gap: 24px;
+  }
+  .dashboard-layout .sidebar-left {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+    padding: 16px 16px 40px;
+    gap: 16px;
+  }
+  .dashboard-layout .sidebar-left,
+  .dashboard-layout .sidebar-right {
+    display: none;
+  }
+}

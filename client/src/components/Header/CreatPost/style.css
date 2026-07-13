@@ -1,0 +1,77 @@
+.creat-post {
+  align-items: flex-start;
+  border-radius: 16px;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  position: relative;
+}
+
+.creat-post .main-2 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 20px;
+  position: relative;
+}
+
+.creat-post .abatars {
+  background-color: #f9dfc0;
+  border-radius: 20px;
+  height: 40px;
+  position: relative;
+  width: 40px;
+}
+
+.creat-post .mask-group {
+  height: 32px;
+  left: 5px;
+  position: absolute;
+  top: 4px;
+  width: 30px;
+}
+
+.creat-post .input-data {
+  align-items: flex-start;
+  border-radius: 6px;
+  display: flex;
+  gap: 10px;
+  padding: 12px 0px 12px 12px;
+  position: relative;
+  width: 553px;
+}
+
+.creat-post .text-wrapper-2 {
+  color: var(--secondary-colorsecondary-4);
+  font-family: var(--regular-14-font-family);
+  font-size: var(--regular-14-font-size);
+  font-style: var(--regular-14-font-style);
+  font-weight: var(--regular-14-font-weight);
+  letter-spacing: var(--regular-14-letter-spacing);
+  line-height: var(--regular-14-line-height);
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.creat-post .button-instance {
+  flex: 0 0 auto !important;
+}
+
+.creat-post.dark-18-off {
+  background-color: var(--secondary-colorbackground);
+}
+
+.creat-post.dark-18-on {
+  background-color: var(--dark-3);
+}
+
+.creat-post.dark-18-off .input-data {
+  background-color: var(--secondary-colorsecondary-6);
+}
+
+.creat-post.dark-18-on .input-data {
+  background-color: var(--dark-4);
+}

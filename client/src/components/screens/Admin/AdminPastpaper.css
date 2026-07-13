@@ -1,0 +1,69 @@
+#back {
+    background-color: #FF6934;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+thead{
+    text-align:justify
+}
+
+th{
+ border: none;   
+}
+
+td {
+    border-bottom: 1px solid white;
+}
+
+.edit-options {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  
+  .edit-options button {
+    background-color: #FF6934;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px; /* Adjusted margin for more space */
+  }
+  
+  .edit-options button:hover {
+    background-color: #FF8F67;
+  }
+  
+  /* Add a little more margin for better spacing */
+  .edit-options td {
+    padding-top: 10px;
+  }
+
+@media (max-width: 768px) {
+  .admin-past-papers-page {
+    padding: 16px !important;
+  }
+
+  .admin-past-papers-table-wrap {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    width: 100% !important;
+  }
+
+  .admin-past-papers-table {
+    min-width: 720px;
+  }
+
+  .admin-past-papers-table td,
+  .admin-past-papers-table th {
+    padding: 0 8px;
+  }
+
+  .admin-past-papers-table a {
+    overflow-wrap: anywhere;
+  }
+}
