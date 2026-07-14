@@ -120,11 +120,20 @@
 @media (max-width: 768px) {
   .dashboard-layout {
     grid-template-columns: 1fr;
-    padding: 16px 16px 40px;
+    padding: 16px clamp(12px, 4vw, 20px) 40px;
     gap: 16px;
   }
   .dashboard-layout .sidebar-left,
   .dashboard-layout .sidebar-right {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-layout { padding: 12px 10px 32px; }
+  .dashboard-layout .feed-main { gap: 12px; }
+
+  .dashboard-layout .text-wrapper-9 {
+    margin-bottom: 8px;
   }
 }

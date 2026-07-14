@@ -1,57 +1,43 @@
-#back {
-    background-color: #FF6934;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-thead{
-    text-align:justify
-}
-
-th{
- border: none;   
-}
-
-td {
-    border-bottom: 1px solid white;
-}
-
-.edit-options {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-  }
-  
-  .edit-options button {
-    background-color: #FF6934;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px; /* Adjusted margin for more space */
-  }
-  
-  .edit-options button:hover {
-    background-color: #FF8F67;
-  }
-  
-  /* Add a little more margin for better spacing */
-  .edit-options td {
-    padding-top: 10px;
-  }
+.admin-past-papers-page { background: var(--bg-primary); min-height: calc(100vh - 56px); padding: 32px 24px 80px; }
+.admin-papers-back { background: transparent; border: 0; color: var(--text-secondary); cursor: pointer; font-size: 13px; font-weight: 600; padding: 0; }
+.admin-papers-back:hover { color: var(--text-primary); }
+.admin-papers-heading { align-items: flex-end; display: flex; justify-content: space-between; margin: 24px auto 28px; max-width: 1120px; }
+.admin-papers-eyebrow { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .08em; margin: 0 0 4px; text-transform: uppercase; }
+.admin-papers-heading h1 { color: var(--text-primary); font-size: 28px; letter-spacing: -.03em; line-height: 1.2; margin: 0; }
+.admin-papers-heading p:not(.admin-papers-eyebrow) { color: var(--text-secondary); margin: 6px 0 0; }
+.admin-papers-count { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-full); color: var(--text-secondary); font-size: 12px; font-weight: 600; padding: 6px 10px; }
+.admin-past-papers-table-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); margin: 0 auto; max-width: 1120px; overflow-x: auto; }
+.admin-past-papers-table { border-collapse: collapse; color: var(--text-primary); min-width: 760px; width: 100%; }
+.admin-past-papers-table th, .admin-past-papers-table td { border-bottom: 1px solid var(--border); padding: 15px 18px; text-align: left; }
+.admin-past-papers-table th { color: var(--text-muted); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.admin-past-papers-table tbody > tr:not(.paper-manage-row):hover { background: var(--bg-hover); }
+.admin-past-papers-table tbody > tr:last-child td { border-bottom: 0; }
+.paper-link { color: var(--accent); font-weight: 600; text-decoration: none; }
+.paper-link:hover { color: var(--accent-hover); }
+.paper-kind { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-full); color: var(--text-secondary); font-size: 12px; padding: 4px 8px; }
+.admin-paper-actions { text-align: right !important; }
+.manage-paper-button, .cancel-paper-button, .delete-paper-button { border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; font-weight: 600; padding: 8px 10px; }
+.manage-paper-button, .cancel-paper-button { background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-primary); }
+.manage-paper-button:hover, .cancel-paper-button:hover { border-color: var(--border-hover); background: var(--bg-hover); }
+.paper-manage-row td { background: var(--bg-elevated); padding: 12px 18px; }
+.edit-options { align-items: center; display: flex; justify-content: space-between; gap: 20px; }
+.edit-options strong, .edit-options span { display: block; }
+.edit-options span { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+.edit-options-actions { display: flex; gap: 8px; }
+.delete-paper-button { background: #b42318; border: 1px solid #b42318; color: white; }
+.delete-paper-button:hover { background: #d92d20; }
+.delete-paper-button:disabled { cursor: wait; opacity: .65; }
+.admin-papers-empty { color: var(--text-muted); padding: 48px !important; text-align: center !important; }
 
 @media (max-width: 768px) {
   .admin-past-papers-page {
-    padding: 16px !important;
+    padding: 20px 16px 40px;
   }
 
   .admin-past-papers-table-wrap {
     overflow-x: auto;
     overscroll-behavior-inline: contain;
-    width: 100% !important;
+    width: 100%;
   }
 
   .admin-past-papers-table {
@@ -60,10 +46,12 @@ td {
 
   .admin-past-papers-table td,
   .admin-past-papers-table th {
-    padding: 0 8px;
+    padding: 12px 14px;
   }
 
   .admin-past-papers-table a {
     overflow-wrap: anywhere;
   }
+
+  .admin-papers-heading { align-items: flex-start; flex-direction: column; gap: 14px; margin-top: 20px; }
 }

@@ -110,3 +110,12 @@
     font-size: 1.75rem;
   }
 }
+
+.admin-login-page { background: var(--bg-primary); min-height: 100dvh; padding: 20px; }
+.admin-login-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+.admin-login-title, .form-group label { color: var(--text-primary); }
+.form-group input { background: var(--bg-input); border-color: var(--border); color: var(--text-primary); }
+.checkbox-field { color: var(--text-secondary); }
+.forgot-text { color: var(--accent); }
+.login-submit { background: var(--accent); border-radius: var(--radius-sm); }
+@media (max-width: 380px) { .admin-login-page { padding: 12px; } .admin-login-card { padding: 20px; } }

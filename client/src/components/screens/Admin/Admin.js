@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Meetups } from "../../Meetups";
-import { PopularTags } from "../../PopularTags";
 import { Bitcoin3 } from "../../../icons/Bitcoin3";
 import "./admin.css";
 import MyModal from "../../Modal/modal";
@@ -8,7 +7,7 @@ import MyModal2 from "../../Modal/regModal";
 import { Vector173 } from "../../../icons/Vector173";
 import { Navigate, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
-import { AdminHeader } from '../../Header/AdminHeader';
+import { Header } from '../../Header';
 
 
 const fetchData = async () => {
@@ -30,6 +29,9 @@ export default function Admin() {
   const [modalMode, setModalMode] = useState(""); // State to store the modal mode
   const [userInfo, setUserInfo] = useState(null);
   const [onSiteCompetitions, setonSiteCompetitions] = useState([]);
+  const [selectedCompetition, setSelectedCompetition] = useState(null);
+  const [registrationEntries, setRegistrationEntries] = useState([]);
+  const [isLoadingEntries, setIsLoadingEntries] = useState(false);
 
   const navigate = useNavigate() 
 
@@ -95,6 +97,30 @@ export default function Admin() {
     setIsModalOpen(false);
     setIsOnSiteModalOpen(false);
 
+  };
+
+  const viewRegistrationEntries = async (competition) => {
+    setSelectedCompetition(competition);
+    setIsLoadingEntries(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/onsite-competition-registrations?title=${encodeURIComponent(competition.title)}`,
+        { credentials: "include" },
+      );
+
+      if (!response.ok) {
+        throw new Error("Could not load registrations");
+      }
+
+      setRegistrationEntries(await response.json());
+    } catch (error) {
+      console.error("Error fetching registration entries:", error);
+      setRegistrationEntries([]);
+      toast.error("Could not load registration entries");
+    } finally {
+      setIsLoadingEntries(false);
+    }
   };
 
   const handleModalSubmit = async (competitionData) => {
@@ -214,7 +240,7 @@ const handleModal2Submit = async (competitionData) => {
 
   return (
     <>
-      <AdminHeader page="ah"></AdminHeader>
+      <Header page="dashboard"></Header>
     <>
       <MyModal
         isOpen={isModalOpen}
@@ -228,25 +254,11 @@ const handleModal2Submit = async (competitionData) => {
         onSubmit={handleModal2Submit}
         mode={modalMode}
       />
-      <div id="admin" className="main">
-      <div className="div-3">
-          <div id="comp" className="meetups dark-46-on design-component-instance-node1">
-            <div className="main-5">
-              <div className="text-wrapper-9" style={{fontSize : "15px"}}><a href="/register-competition">Onsite Registerations ! </a></div>
-            </div>
-            {isLoadingCompetitions ? (
-              <p>Loading competitions...</p>
-            ) : (
-              <div>
-                {onSiteCompetitions.map((item) => (
-                  <PopularTags className="design-component-instance-node"
-                    dark="on" text="Registerations !" date={item.date} text1={item.title} text2={item.max_registerations} text3={item.registerations_completed} text4={item.location}/>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="div-3">
+      <div id="admin" className="admin-dashboard">
+        <aside className="admin-actions">
+          <p className="admin-eyebrow">Dashboard</p>
+          <h1>Manage content</h1>
+          <p className="admin-copy">Create competitions, past papers, and on-site events from one place.</p>
           <button
             type="button"
             className="button text-wrapper-3"
@@ -268,9 +280,72 @@ const handleModal2Submit = async (competitionData) => {
           >
             Upload On-Site Competition
           </button>
-        </div>
+        </aside>
 
-        <div className="right-bar">
+        <section className="admin-primary">
+          <div className="admin-section-heading">
+            <div>
+              <p className="admin-eyebrow">On-site registrations</p>
+              <h2>Competition entries</h2>
+            </div>
+            <a href="/register-competition">View public page</a>
+          </div>
+          {isLoadingCompetitions ? (
+            <p className="admin-empty">Loading competitions...</p>
+          ) : onSiteCompetitions.length === 0 ? (
+            <p className="admin-empty">No on-site competitions yet.</p>
+          ) : (
+            <div className="onsite-competitions-list">
+              {onSiteCompetitions.map((item) => (
+                <div className="onsite-competition-item" key={item._id}>
+                  <div>
+                    <strong>{item.title}</strong>
+                    <div className="onsite-competition-meta">
+                      {item.registerations_completed} / {item.max_registerations} registrations
+                    </div>
+                  </div>
+                  <button type="button" className="view-entries-button" onClick={() => viewRegistrationEntries(item)}>
+                    View entries
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {selectedCompetition && (
+            <div className="registration-entries-panel">
+              <div className="registration-entries-header">
+                <div>
+                  <p className="admin-eyebrow">Registration entries</p>
+                  <strong>{selectedCompetition.title}</strong>
+                </div>
+                <button type="button" onClick={() => setSelectedCompetition(null)}>Close</button>
+              </div>
+
+              {isLoadingEntries ? (
+                <p className="admin-empty">Loading entries...</p>
+              ) : registrationEntries.length === 0 ? (
+                <p className="admin-empty">No registrations yet.</p>
+              ) : (
+                <div className="registration-entries-table-wrap">
+                  <table className="registration-entries-table">
+                    <thead><tr><th>#</th><th>Team</th><th>Member 1</th><th>Member 2</th><th>Member 3</th><th>Phone</th></tr></thead>
+                    <tbody>
+                      {registrationEntries.map((entry, index) => (
+                        <tr key={entry._id}>
+                          <td>{index + 1}</td><td>{entry.team_name}</td><td>{entry.member1}</td>
+                          <td>{entry.member2}</td><td>{entry.member3}</td><td>{entry.phone_number}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
+        </section>
+
+        <aside className="right-bar">
           <div id="comp" className="meetups dark-46-on design-component-instance-node">
             <div className="main-5">
               <div className="title-4">
@@ -291,7 +366,7 @@ const handleModal2Submit = async (competitionData) => {
               </ul>
             </div>
           </div>
-        </div>
+        </aside>
       </div>
     </>
   </>

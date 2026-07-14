@@ -111,3 +111,12 @@
     font-size: 1.75rem;
   }
 }
+
+.signup-page { background: var(--bg-primary); min-height: 100dvh; padding: 20px; }
+.signup-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+.signup-title, .form-group label { color: var(--text-primary); }
+.form-group input { background: var(--bg-input); border-color: var(--border); color: var(--text-primary); }
+.signup-footer p { color: var(--text-secondary); }
+.signup-button { background: var(--accent); border-radius: var(--radius-sm); }
+.login-button { background: var(--bg-elevated); border-color: var(--border); color: var(--text-primary); }
+@media (max-width: 380px) { .signup-page { padding: 12px; } .signup-card { padding: 20px; } }

@@ -124,3 +124,10 @@
   line-height: 18px;
   white-space: nowrap;
 }
+
+@media (max-width: 480px) {
+  .creat-post { padding: 12px; }
+  .creat-post .main-3 { align-items: stretch; flex-wrap: wrap; }
+  .creat-post .input-data { min-height: 44px; padding: 10px 12px; flex: 1 1 calc(100% - 48px); }
+  .creat-post .button { margin-left: 48px; justify-content: center; width: calc(100% - 48px); min-height: 42px; }
+}

@@ -3,25 +3,22 @@ import { Header } from "../../Header";
 import { Link } from "react-router-dom";
 import "./news.css";
 
-const API_KEY = "1e5058feb8854454a2ced3805459110f";
-
 export default function News() {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchNews() {
       try {
-        const res = await fetch(
-          `https://newsapi.org/v2/everything?q=technology&pageSize=30&sortBy=publishedAt&language=en&apiKey=${API_KEY}`
-        );
+        const res = await fetch("http://localhost:8080/api/tech-news?limit=30");
+        if (!res.ok) throw new Error("Tech news is temporarily unavailable");
         const data = await res.json();
-        if (data.status === "ok") {
-          setArticles(data.articles);
-        }
+        setArticles(data.articles || []);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching news:", error);
+        setError(error.message);
         setIsLoading(false);
       }
     }
@@ -74,6 +71,10 @@ export default function News() {
             <div className="news-spinner" />
             <p>Loading stories...</p>
           </div>
+        ) : error ? (
+          <div className="news-loading"><p>{error}</p></div>
+        ) : articles.length === 0 ? (
+          <div className="news-loading"><p>No recent stories found.</p></div>
         ) : (
           <div className="news-grid">
             {articles.map((article, index) => (

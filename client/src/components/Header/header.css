@@ -260,3 +260,14 @@ a { cursor: pointer; }
     display: none;
   }
 }
+
+@media (max-width: 480px) {
+  #navbar .main {
+    padding: 0 10px;
+    gap: 8px !important;
+  }
+  .header .div-2 { gap: 6px; }
+  .header .main-2 { gap: 4px; }
+  .header .home-wrapper,
+  .header .home-wrapper-2 { padding: 6px; }
+}

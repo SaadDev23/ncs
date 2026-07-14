@@ -637,3 +637,11 @@
     left: 24px;
   }
 }
+
+/* Keep the legacy profile composition, but use the shared black surface system. */
+.box { background: var(--bg-primary) !important; }
+.box .haha, .box .avatar { background: var(--bg-card); border: 1px solid var(--border); }
+.box .overlap-group { background: var(--bg-elevated); border: 1px solid var(--border); }
+.box .rectangle { background: var(--bg-input); }
+.profile-edit-modal { background: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow-md); }
+.profile-edit-modal input { background: var(--bg-input); border: 1px solid var(--border); color: var(--text-primary); }

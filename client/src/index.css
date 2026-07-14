@@ -66,6 +66,14 @@ body {
   background: var(--bg-primary);
 }
 
+.container-fluid { min-width: 0; overflow-x: clip; }
+
+@media (max-width: 640px) {
+  body { font-size: 14px; }
+  button, input, select, textarea { font-size: 16px; }
+  .Toastify__toast-container { left: 12px; margin: 0; width: calc(100vw - 24px); }
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

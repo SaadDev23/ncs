@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import pastpaperModel from "../model/Pastpaper.model.js";
 import onSiteCompetitionsModel from "../model/onSiteCompetitions.model.js";
 import registrationsModel from "../model/registrations.model.js";
+import axios from "axios";
 import {
   sendVerificationEmail,
   sendPasswordResetEmail,
@@ -584,6 +585,10 @@ export async function getOnsiteCompetitions(req, res) {
 export async function getOnsiteCompetitionRegistrations(req, res) {
   const { title } = req.query;
 
+  if (!req.session.user || req.session.user.role !== "admin") {
+    return res.status(403).json({ error: "Admin access is required" });
+  }
+
   if (!title) {
     return res.status(400).json({ error: "Competition title is required" });
   }
@@ -645,17 +650,27 @@ export async function registerForOnsiteCompetition(req, res) {
   if (!title || !member1 || !member2 || !member3 || !phoneNumber || !teamName) {
     return res.status(400).json({ error: "Missing required fields" });
   }
-  console.log(req.body);
-  const onsiteComp = await onSiteCompetitionsModel.findOne({ title: title });
-  if (!onsiteComp)
-    return res.status(400).json({ error: "Title Does not Exist" });
-
-  console.log(onsiteComp);
-  onsiteComp.registerations_completed = onsiteComp.registerations_completed + 1;
-  onsiteComp.save();
-
+  let registrationSlotReserved = false;
   try {
-    // Update the user's profile picture in MongoDB
+    const onsiteComp = await onSiteCompetitionsModel.findOneAndUpdate(
+      {
+        title,
+        $expr: { $lt: ["$registerations_completed", "$max_registerations"] },
+      },
+      { $inc: { registerations_completed: 1 } },
+      { new: true },
+    );
+
+    if (!onsiteComp) {
+      const competitionExists = await onSiteCompetitionsModel.exists({ title });
+      return res.status(competitionExists ? 409 : 404).json({
+        error: competitionExists
+          ? "Registration capacity has been reached"
+          : "Competition does not exist",
+      });
+    }
+    registrationSlotReserved = true;
+
     await registrationsModel.create({
       title,
       member1,
@@ -667,8 +682,62 @@ export async function registerForOnsiteCompetition(req, res) {
 
     res.status(201).json({ message: "Registeration Successful" });
   } catch (error) {
+    // Keep the displayed registration total accurate if saving the entry fails.
+    if (registrationSlotReserved) {
+      await onSiteCompetitionsModel.updateOne(
+        { title, registerations_completed: { $gt: 0 } },
+        { $inc: { registerations_completed: -1 } },
+      ).catch(() => {});
+    }
     console.error("Registeration Failed:", error);
     res.status(500).json({ error: "Error Registering for Competition" });
+  }
+}
+
+/** GET: http://localhost:8080/api/tech-news?limit=5 */
+export async function getTechNews(req, res) {
+  const limit = Math.min(Math.max(Number(req.query.limit) || 5, 1), 30);
+  const newsApiKey = process.env.NEWS_API_KEY || "1e5058feb8854454a2ced3805459110f";
+
+  try {
+    const response = await axios.get("https://newsapi.org/v2/everything", {
+      params: {
+        q: "technology",
+        pageSize: limit,
+        sortBy: "publishedAt",
+        language: "en",
+        apiKey: newsApiKey,
+      },
+      timeout: 10000,
+    });
+
+    const articles = (response.data.articles || []).filter(
+      (article) => article.title && article.url,
+    );
+    return res.status(200).json({ articles, source: "NewsAPI" });
+  } catch (newsApiError) {
+    // Hacker News is a reliable no-key fallback, so the UI is still useful when
+    // NewsAPI rejects a key, rate-limits the project, or is temporarily down.
+    try {
+      const fallback = await axios.get("https://hn.algolia.com/api/v1/search_by_date", {
+        params: { query: "technology", tags: "story", hitsPerPage: limit },
+        timeout: 10000,
+      });
+      const articles = (fallback.data.hits || [])
+        .filter((hit) => hit.title && (hit.url || hit.story_url))
+        .map((hit) => ({
+          title: hit.title,
+          description: null,
+          url: hit.url || hit.story_url,
+          urlToImage: null,
+          publishedAt: hit.created_at,
+          source: { name: "Hacker News" },
+        }));
+      return res.status(200).json({ articles, source: "Hacker News" });
+    } catch (fallbackError) {
+      console.error("Error fetching tech news:", newsApiError.message, fallbackError.message);
+      return res.status(502).json({ error: "Tech news is temporarily unavailable" });
+    }
   }
 }
 

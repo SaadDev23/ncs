@@ -357,3 +357,14 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+@media (max-width: 480px) {
+  .post { gap: 12px; padding: 14px; }
+  .post .main-4, .post .data { gap: 10px; }
+  .post .bitcoin-has-tumbled { font-size: 14px; }
+  .post .name-3 { align-items: flex-start; gap: 8px; }
+  .post .tags-3, .post .action { gap: 8px; flex-wrap: wrap; }
+  .post-comment-form { align-items: stretch; flex-direction: column; }
+  .post-comment-btn { min-height: 40px; width: 100%; }
+  .post-comment-date { margin-left: 0; width: 100%; }
+}

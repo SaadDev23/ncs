@@ -40,6 +40,7 @@ router.route("/createResetSession").get(controller.createResetSession); // reset
 router.route("/competitions").get(controller.getComp); // reset all the variables
 router.route("/pastpapers").get(controller.getPastPapers); // reset all the variables
 router.route("/get-onsite-competitions").get(controller.getOnsiteCompetitions); // reset all the variables
+router.route("/tech-news").get(controller.getTechNews);
 router
   .route("/onsite-competition-registrations")
   .get(controller.getOnsiteCompetitionRegistrations);

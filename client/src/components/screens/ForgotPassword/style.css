@@ -155,3 +155,12 @@
     font-size: 13px;
   }
 }
+
+.forgot-password-page { background: var(--bg-primary); min-height: 100dvh; padding: 20px; }
+.forgot-password-card { background: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow-md); }
+.forgot-password-title, .form-group label { color: var(--text-primary); }
+.forgot-password-subtitle, .forgot-password-footer { color: var(--text-secondary); border-color: var(--border); }
+.form-group input { background: var(--bg-input); border-color: var(--border); color: var(--text-primary); }
+.reset-button { background: var(--accent); border-radius: var(--radius-sm); }
+.back-link, .login-link, .forgot-password-subtitle strong { color: var(--accent); }
+@media (max-width: 380px) { .forgot-password-page { padding: 12px; } .forgot-password-card { padding: 24px 16px; } }

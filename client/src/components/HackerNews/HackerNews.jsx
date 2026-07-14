@@ -2,25 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./hackernews.css";
 
-const API_KEY = "1e5058feb8854454a2ced3805459110f";
-
 export const HackerNews = () => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchNews() {
       try {
-        const res = await fetch(
-          `https://newsapi.org/v2/everything?q=technology&pageSize=5&sortBy=publishedAt&language=en&apiKey=${API_KEY}`
-        );
+        const res = await fetch("http://localhost:8080/api/tech-news?limit=5");
+        if (!res.ok) throw new Error("Tech news is temporarily unavailable");
         const data = await res.json();
-        if (data.status === "ok") {
-          setArticles(data.articles);
-        }
+        setArticles(data.articles || []);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching news:", error);
+        setError(error.message);
         setIsLoading(false);
       }
     }
@@ -52,6 +49,10 @@ export const HackerNews = () => {
       </div>
       {isLoading ? (
         <div className="hackernews-loading">Loading...</div>
+      ) : error ? (
+        <div className="hackernews-loading">{error}</div>
+      ) : articles.length === 0 ? (
+        <div className="hackernews-loading">No recent stories found.</div>
       ) : (
         <>
           <div className="hackernews-list">

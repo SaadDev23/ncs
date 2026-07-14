@@ -17,6 +17,8 @@ const PastPapers = () => {
   const [data, setData] = useState([]);
   const [fetchDataFlag, setFetchDataFlag] = useState(true); // State to trigger data fetching
   const [selectedPaper, setSelectedPaper] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState(null);
   const navigate = useNavigate();
 
   const backToHome = () => {
@@ -25,8 +27,7 @@ const PastPapers = () => {
 
   const handleDelete = async (paperToDelete) => {
     try {
-        console.log(`paperToDelete id is ${paperToDelete._id}`);
-        // const id = paperToDelete._id
+      setDeletingId(paperToDelete._id);
       const response = await fetch(`http://localhost:8080/api/pastpapers`, {
         method: 'DELETE',
         headers: {
@@ -36,18 +37,16 @@ const PastPapers = () => {
       });
 
       if (response.ok) {
-        // Remove the deleted paper from the data state
-        setData((prevData) => prevData.filter((paper) => paper.id !== paperToDelete.id));
-        navigate(0)
+        setData((prevData) => prevData.filter((paper) => paper._id !== paperToDelete._id));
       } else {
         console.error('Error deleting paper:', response.statusText);
       }
     } catch (error) {
       console.error('Error deleting paper:', error);
+    } finally {
+      setDeletingId(null);
+      setSelectedPaper(null);
     }
-
-    // Clear the selectedPaper state
-    setSelectedPaper(null);
   };
 
   // Call the fetchData function when the component is loaded
@@ -56,9 +55,8 @@ const PastPapers = () => {
       const result = await fetchData();
       if (result) {
         setData(result);
-        setFetchDataFlag(false);
-        console.log(result);
       }
+      setIsLoading(false);
     };
     fetchDataAndSetData();
   }, [fetchDataFlag]);
@@ -67,13 +65,22 @@ const PastPapers = () => {
     <>
       <Header page="pp"></Header>
 
-      <div className="admin-past-papers-page" style={{ backgroundColor: '#1E252B', minHeight: '100vh', padding: '20px' }}>
-        <button id="back" onClick={backToHome}>
-          Back to Home
+      <main className="admin-past-papers-page">
+        <button className="admin-papers-back" onClick={backToHome}>
+          ← Back to home
         </button>
 
-        <div className="admin-past-papers-table-wrap" style={{ width: '80%', margin: '0 auto' }}>
-          <table className="admin-past-papers-table" style={{ width: '100%', borderCollapse: 'collapse', color: 'white', lineHeight: '50px' }}>
+        <section className="admin-papers-heading">
+          <div>
+            <p className="admin-papers-eyebrow">Admin library</p>
+            <h1>Past papers</h1>
+            <p>Review and remove resources that are no longer needed.</p>
+          </div>
+          <div className="admin-papers-count">{data.length} {data.length === 1 ? 'paper' : 'papers'}</div>
+        </section>
+
+        <div className="admin-past-papers-table-wrap">
+          <table className="admin-past-papers-table">
             <thead>
               <tr>
                 <th>No</th>
@@ -85,7 +92,11 @@ const PastPapers = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((paper, index) => {
+              {isLoading ? (
+                <tr><td colSpan="6" className="admin-papers-empty">Loading past papers…</td></tr>
+              ) : data.length === 0 ? (
+                <tr><td colSpan="6" className="admin-papers-empty">No past papers have been added yet.</td></tr>
+              ) : data.map((paper, index) => {
                 const isValidDate = !!paper.date && !isNaN(Date.parse(paper.date));
                 const formattedDate = isValidDate
                   ? (() => {
@@ -95,31 +106,41 @@ const PastPapers = () => {
                         .toString()
                         .padStart(2, '0')}-${dateObject.getFullYear()}`;
                     })()
-                  : '';
+                  : '—';
 
                 return (
-                  <React.Fragment key={index}>
+                  <React.Fragment key={paper._id || index}>
                     <tr>
                       <td>{index + 1}</td>
                       <td>{paper.name}</td>
                       <td>{formattedDate}</td>
                       <td>
-                        <a target='_blank' href={paper.link} style={{ color: 'white', textDecoration: 'none' }} rel="noreferrer">
-                          {paper.link}
+                        <a className="paper-link" target='_blank' href={paper.link} rel="noreferrer">
+                          Open paper ↗
                         </a>
                       </td>
-                      <td>{paper.kind}</td>
-                      <td>
-                        <button onClick={() => setSelectedPaper(paper)}>Edit</button>
+                      <td><span className="paper-kind">{paper.kind || 'Uncategorized'}</span></td>
+                      <td className="admin-paper-actions">
+                        <button className="manage-paper-button" onClick={() => setSelectedPaper(selectedPaper?._id === paper._id ? null : paper)}>
+                          {selectedPaper?._id === paper._id ? 'Close' : 'Manage'}
+                        </button>
                       </td>
                     </tr>
 
-                    {selectedPaper && selectedPaper.id === paper.id && (
-                      <tr>
-                        <td colSpan="5"> {/* Span across all columns */}
+                    {selectedPaper?._id === paper._id && (
+                      <tr className="paper-manage-row">
+                        <td colSpan="6">
                           <div className="edit-options">
-                            <button onClick={() => setSelectedPaper(null)}>Cancel</button>
-                            <button onClick={() => handleDelete(selectedPaper)}>Delete</button>
+                            <div>
+                              <strong>Remove “{paper.name}”?</strong>
+                              <span>This action cannot be undone.</span>
+                            </div>
+                            <div className="edit-options-actions">
+                              <button className="cancel-paper-button" onClick={() => setSelectedPaper(null)}>Cancel</button>
+                              <button className="delete-paper-button" onClick={() => handleDelete(paper)} disabled={deletingId === paper._id}>
+                                {deletingId === paper._id ? 'Deleting…' : 'Delete paper'}
+                              </button>
+                            </div>
                           </div>
                         </td>
                       </tr>
@@ -130,7 +151,7 @@ const PastPapers = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </main>
     </>
   );
 };

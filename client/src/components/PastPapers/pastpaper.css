@@ -1,22 +1,12 @@
-#back {
-  background-color: #FF6934;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-thead{
-  text-align:justify
-}
-
-th{
-border: none;   
-}
-
-td {
-  border-bottom: 1px solid white;
-}
+.past-papers-page { background: var(--bg-primary); min-height: calc(100vh - 56px); padding: 32px 24px 80px; }
+#back { background: var(--accent); border: 0; border-radius: var(--radius-sm); color: white; cursor: pointer; font-weight: 600; margin-bottom: 24px; padding: 10px 16px; }
+.past-papers-table-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); margin: 0 auto; max-width: 1120px; overflow-x: auto; }
+.past-papers-table { border-collapse: collapse; color: var(--text-primary); min-width: 720px; width: 100%; }
+.past-papers-table th, .past-papers-table td { border-bottom: 1px solid var(--border); padding: 15px 18px; text-align: left; }
+.past-papers-table th { color: var(--text-muted); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
+.past-papers-table tbody tr:last-child td { border-bottom: 0; }
+.past-papers-table tbody tr:hover { background: var(--bg-hover); }
+.past-papers-table a { color: var(--accent); text-decoration: none; }
 
 @media (max-width: 768px) {
   .past-papers-page {

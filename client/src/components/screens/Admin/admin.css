@@ -1,17 +1,52 @@
-#admin.main {
+#admin.admin-dashboard {
   display: grid;
-  grid-template-columns: minmax(280px, 320px) minmax(240px, 1fr) minmax(320px, 380px);
-  gap: 1.5rem;
-  justify-content: center;
-  background-color: rgb(30, 37, 43);
-  min-height: 100vh;
-  padding: 2rem;
-  box-sizing: border-box;
+  grid-template-columns: minmax(220px, 260px) minmax(420px, 1fr) minmax(260px, 320px);
+  gap: 24px;
+  max-width: 1200px;
+  min-height: calc(100vh - 56px);
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+  background: var(--bg-primary);
 }
+
+.admin-actions,
+.admin-primary,
+#admin .right-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.admin-actions,
+.admin-primary,
+#admin .right-bar > .meetups,
+.registration-entries-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.admin-actions,
+.admin-primary { padding: 20px; }
+
+.admin-eyebrow {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.admin-actions h1, .admin-section-heading h2 { color: var(--text-primary); font-size: 20px; line-height: 1.25; margin: 0; }
+.admin-copy, .admin-empty { color: var(--text-secondary); margin: 0 0 8px; }
+.admin-section-heading { align-items: center; display: flex; justify-content: space-between; gap: 16px; margin-bottom: 8px; }
+.admin-section-heading a { color: var(--accent); font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap; }
 
 .button {
   all: unset;
-  background-color: #FF6934;
+  background-color: var(--accent);
   border-radius: 6px;
   box-sizing: border-box;
   display: inline-flex;
@@ -28,49 +63,14 @@
   font-weight: 500;
   letter-spacing: 0;
   line-height: 20px;
-  margin-top: -1px;
+  margin-top: 0;
   position: relative;
   white-space: nowrap;
   width: fit-content;
   cursor: pointer;
 }
 
-#admin.main .div-3 {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 280px;
-}
-
-.main #comp.design-component-instance-node {
-  flex: 1 1 auto !important;
-  width: 100% !important;
-}
-
-
-.main .popular-tags-instance {
-  margin-right: -2px !important;
-}
-
-.main .bitcoin-3 {
-  height: 20px !important;
-  position: relative !important;
-  width: 20px !important;
-}
-
-.main .creat-post-instance {
-  height: 87px !important;
-}
-
-.main .right-bar {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
-  min-width: 0;
-}
-
-.main #comp.design-component-instance-node .main-5 {
+#admin #comp.design-component-instance-node .main-5 {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -119,31 +119,92 @@
 }
 
 .meetups.dark-46-on {
-  background-color: #262D34;
+  background-color: var(--bg-card);
+}
+
+.onsite-competitions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.onsite-competition-item {
+  align-items: center;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.onsite-competition-meta {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.view-entries-button,
+.registration-entries-header button {
+  background-color: var(--accent);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  padding: 7px 10px;
+  white-space: nowrap;
+}
+
+.registration-entries-panel {
+  color: var(--text-primary);
+  padding: 16px;
+}
+
+.registration-entries-header {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.registration-entries-table-wrap {
+  overflow-x: auto;
+}
+
+.registration-entries-table {
+  border-collapse: collapse;
+  min-width: 620px;
+  width: 100%;
+}
+
+.registration-entries-table th,
+.registration-entries-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px;
+  text-align: left;
 }
 
 @media (max-width: 1100px) {
-  #admin.main {
+  #admin.admin-dashboard {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  #admin.main .div-3 {
-    width: 100%;
-  }
-
-  #admin.main .right-bar {
+  #admin.admin-dashboard .right-bar {
     grid-column: 1 / -1;
   }
 }
 
 @media (max-width: 768px) {
-  #admin.main {
+  #admin.admin-dashboard {
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;
     padding: 16px;
   }
 
-  #admin.main .right-bar {
+  #admin.admin-dashboard .right-bar {
     grid-column: auto;
   }
 
@@ -156,4 +217,12 @@
     margin-right: 0;
     width: 100%;
   }
+}
+
+@media (max-width: 480px) {
+  #admin.admin-dashboard { padding: 12px 12px 32px; }
+  .admin-actions, .admin-primary { padding: 16px; }
+  .admin-section-heading { align-items: flex-start; flex-direction: column; }
+  .onsite-competition-item { align-items: flex-start; flex-direction: column; }
+  .view-entries-button { min-height: 40px; width: 100%; }
 }

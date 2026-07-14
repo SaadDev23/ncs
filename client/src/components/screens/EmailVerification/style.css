@@ -185,3 +185,14 @@
     font-size: 13px;
   }
 }
+
+.verification-page { background: var(--bg-primary); min-height: 100dvh; padding: 20px; }
+.verification-card { background: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow-md); }
+.verification-title, .form-group label { color: var(--text-primary); }
+.verification-subtitle, .verification-footer p, .form-group small { color: var(--text-secondary); }
+.verification-footer { border-color: var(--border); }
+.form-group input { background: var(--bg-input); border-color: var(--border); color: var(--text-primary); }
+.verify-button { background: var(--accent); border-radius: var(--radius-sm); }
+.resend-button { background: var(--bg-elevated); border-color: var(--border); color: var(--accent); }
+.back-button, .verification-subtitle strong { color: var(--accent); }
+@media (max-width: 380px) { .verification-page { padding: 12px; } .verification-card { padding: 24px 16px; } }

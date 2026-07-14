@@ -140,3 +140,14 @@
     font-size: 1.75rem;
   }
 }
+
+/* Shared dark auth surface, with comfortable controls on small screens. */
+.login-page { background: var(--bg-primary); min-height: 100dvh; padding: 20px; }
+.login-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+.login-title, .form-group label { color: var(--text-primary); }
+.form-group input { background: var(--bg-input); border-color: var(--border); color: var(--text-primary); }
+.login-footer, .checkbox-field { color: var(--text-secondary); }
+.forgot-link, .link-button { color: var(--accent); }
+.login-submit { background: var(--accent); border-radius: var(--radius-sm); }
+.login-submit:hover { background: var(--accent-hover); }
+@media (max-width: 380px) { .login-page { padding: 12px; } .login-card { padding: 20px; } .login-meta { align-items: flex-start; flex-direction: column; } }

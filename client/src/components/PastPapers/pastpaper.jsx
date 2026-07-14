@@ -37,13 +37,13 @@ const PastPapers = () => {
         <>
       <Header page="pp"></Header>
 
-        <div className="past-papers-page" style={{ backgroundColor: '#1E252B', minHeight: '100vh', padding: '20px' }}>
+        <div className="past-papers-page">
             <button id='back' onClick={backToHome}>
                 Back to Home
             </button>
 
-            <div className="past-papers-table-wrap" style={{ width:'80%', margin: '0 auto' }}>
-                <table className="past-papers-table" style={{ width: '100%', borderCollapse: 'collapse', color: 'white', lineHeight: '50px' }}>
+            <div className="past-papers-table-wrap">
+                <table className="past-papers-table">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -70,7 +70,7 @@ const PastPapers = () => {
                                     <td>{paper.name}</td>
                                     <td>{formattedDate}</td>
                                     <td>
-                                        <a target='_blank' href={paper.link} style={{ color: 'white', textDecoration: 'none' }} rel="noreferrer">
+                                        <a target='_blank' href={paper.link} rel="noreferrer">
                                             {paper.link}
                                         </a>
                                     </td>
