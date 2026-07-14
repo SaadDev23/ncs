@@ -7,6 +7,7 @@ export default function AdminLogin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,6 +34,7 @@ export default function AdminLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const response = await fetch('http://localhost:8080/api/admin/login', {
@@ -59,6 +61,8 @@ export default function AdminLogin() {
     } catch (error) {
       console.error('Error:', error);
       toast.error('Login failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -77,6 +81,7 @@ export default function AdminLogin() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter admin username"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -89,6 +94,7 @@ export default function AdminLogin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -104,7 +110,9 @@ export default function AdminLogin() {
             <span className="forgot-text">Forgot password?</span>
           </div>
 
-          <button type="submit" className="login-submit">Login</button>
+          <button type="submit" className="login-submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Signing in...' : 'Login'}
+          </button>
         </form>
       </div>
     </div>

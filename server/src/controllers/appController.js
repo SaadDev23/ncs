@@ -11,7 +11,31 @@ import {
   sendPasswordResetEmail,
   generateVerificationCode,
 } from "../utils/emailService.js";
-let existUsername, sessionUser;
+const jwtSecret = process.env.JWT_SECRET || "programmingforlife";
+const verificationRequired = process.env.REQUIRE_EMAIL_VERIFICATION === "true";
+
+async function requestUser(req) {
+  if (req.session?.user) return req.session.user;
+  const authorization = req.get("authorization") || "";
+  if (!authorization.startsWith("Bearer ")) return null;
+
+  try {
+    const payload = jwt.verify(authorization.slice(7), jwtSecret);
+    const user = await UserModel.findById(payload.id).lean();
+    if (!user) return null;
+    return {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      aboutme: user.aboutme,
+      likedPosts: user.likedPosts,
+      profilepicture: user.profilePicture,
+    };
+  } catch {
+    return null;
+  }
+}
 
 async function issueVerificationCode(user) {
   const verificationCode = generateVerificationCode();
@@ -66,13 +90,20 @@ export async function register(req, res) {
             msg: "Account already created. A new verification code was sent.",
             email,
             needsVerification: true,
+            verificationEmailSent: true,
+            verificationRequired,
           });
         } catch (emailError) {
           console.error("Verification email resend failed:", emailError);
-          return res.status(503).send({
-            error: "Account exists, but the verification email could not be sent. Please use Resend Code.",
+          return res.status(200).send({
+            error:
+              emailError.publicMessage ||
+              "The verification email could not be sent.",
+            msg: "Your account already exists. You can sign in with your username and password.",
             email,
             needsVerification: true,
+            verificationEmailSent: false,
+            verificationRequired,
           });
         }
       }
@@ -86,6 +117,7 @@ export async function register(req, res) {
         error: "This email is already registered. Please sign in or reset your password.",
         needsVerification: !existEmail.isVerified,
         email,
+        verificationRequired,
       });
     }
 
@@ -116,13 +148,20 @@ export async function register(req, res) {
         res.status(201).send({
           msg: "User registered successfully. Please check your email for verification code.",
           email: email,
+          verificationEmailSent: true,
+          verificationRequired,
         });
       } catch (emailError) {
         console.error("Email sending failed:", emailError);
-        return res.status(503).send({
-          error: "Your account was created, but the verification email could not be sent. Please use Resend Code.",
+        return res.status(201).send({
+          error:
+            emailError.publicMessage ||
+            "Your account was created, but the verification email could not be sent.",
+          msg: "Account created. You can sign in with your username and password.",
           email,
           needsVerification: true,
+          verificationEmailSent: false,
+          verificationRequired,
         });
       }
     }
@@ -160,7 +199,7 @@ export async function login(req, res) {
       return res.status(400).send({ error: "Incorrect Password" });
     }
 
-    if (!existUsername.isVerified) {
+    if (!existUsername.isVerified && verificationRequired) {
       try {
         await issueVerificationCode(existUsername);
         return res.status(403).send({
@@ -172,7 +211,9 @@ export async function login(req, res) {
       } catch (emailError) {
         console.error("Verification email resend failed during login:", emailError);
         return res.status(503).send({
-          error: "Your email is not verified and a new code could not be sent. Please use Resend Code.",
+          error:
+            emailError.publicMessage ||
+            "Your email is not verified and a new code could not be sent. Please use Resend Code.",
           needsVerification: true,
           codeSent: false,
           email: existUsername.email,
@@ -184,7 +225,7 @@ export async function login(req, res) {
     const role = existUsername.role;
 
     // Generate a JWT token
-    const token = jwt.sign({ id: existUsername._id }, "programmingforlife");
+    const token = jwt.sign({ id: existUsername._id }, jwtSecret);
 
     // Omit the password from the response
     delete existUsername.password;
@@ -197,7 +238,6 @@ export async function login(req, res) {
       likedPosts: existUsername.likedPosts,
       profilepicture: existUsername.profilePicture,
     };
-    sessionUser = userInfo;
     req.session.user = userInfo;
     await req.session.save();
 
@@ -209,6 +249,7 @@ export async function login(req, res) {
       role,
       access: token,
       userInfo,
+      emailVerified: existUsername.isVerified,
     });
   } catch (error) {
     // Handle the error properly, e.g., log it
@@ -246,7 +287,7 @@ export async function adminLogin(req, res) {
     const role = existUsername.role;
 
     // Generate a JWT token
-    const token = jwt.sign({ id: existUsername._id }, "programmingforlife");
+    const token = jwt.sign({ id: existUsername._id }, jwtSecret);
 
     // Omit the password from the response
     delete existUsername.password;
@@ -259,7 +300,6 @@ export async function adminLogin(req, res) {
       aboutme: existUsername.aboutme,
       profilepicture: existUsername.profilePicture,
     };
-    sessionUser = userInfo;
     req.session.user = userInfo;
     await req.session.save();
 
@@ -283,9 +323,8 @@ export async function adminLogin(req, res) {
 
 export async function userSessionInfo(req, res) {
   try {
-    // console.log('helo')
-    // console.log(sessionUser)
-    res.status(200).json({ sessionUser });
+    const user = await requestUser(req);
+    res.status(200).json({ sessionUser: user });
   } catch (error) {
     // Handle the error properly, e.g., log it
     console.error(error);
@@ -298,7 +337,11 @@ export async function userSessionInfo(req, res) {
 export async function logout(req, res) {
   try {
     req.session.destroy();
-    sessionUser = null;
+    res.clearCookie("connect.sid", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    });
     res.send("logged Out successfully");
   } catch (error) {
     // Handle the error properly, e.g., log it
@@ -388,7 +431,10 @@ export async function resendVerificationCode(req, res) {
       console.error("Email sending failed:", emailError);
       return res
         .status(500)
-        .send({ error: "Failed to send verification email" });
+        .send({
+          error:
+            emailError.publicMessage || "Failed to send verification email",
+        });
     }
   } catch (error) {
     console.error(error);
@@ -433,7 +479,9 @@ export async function forgotPassword(req, res) {
       console.error("Email sending failed:", emailError);
       return res
         .status(500)
-        .send({ error: "Failed to send password reset email" });
+        .send({
+          error: emailError.publicMessage || "Failed to send password reset email",
+        });
     }
   } catch (error) {
     console.error(error);
@@ -546,7 +594,7 @@ export async function getUser(req, res) {
     if (!username) return res.status(400).send({ error: "No user entered" });
 
     //Check whether the user exists or not
-    existUsername = await UserModel.findOne({ username }).exec();
+    const existUsername = await UserModel.findOne({ username }).exec();
     if (!existUsername) {
       res.status(404).send({ error: "No such user Exists" });
     }
@@ -581,7 +629,9 @@ export async function updateUser(req, res) {
   // Update the user data (this might involve a database operation in a real-world scenario)
   user.aboutme = aboutMe;
   await user.save();
-  sessionUser.aboutme = aboutMe;
+  if (String(req.session?.user?.id) === String(userId)) {
+    req.session.user.aboutme = aboutMe;
+  }
   // console.log(`about is ${user.aboutme}`)
   // Respond with the updated user data
   res.status(200).json({ success: true, aboutMe: aboutMe });
@@ -597,7 +647,9 @@ export async function updateUserProfile(req, res) {
     await UserModel.findByIdAndUpdate(userId, { profilePicture });
 
     res.status(200).json({ message: "Profile picture updated successfully" });
-    sessionUser.profilepicture = profilePicture;
+    if (String(req.session?.user?.id) === String(userId)) {
+      req.session.user.profilepicture = profilePicture;
+    }
   } catch (error) {
     console.error("Error updating profile picture:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -623,8 +675,9 @@ export async function getOnsiteCompetitions(req, res) {
 /** GET: http://localhost:8080/api/onsite-competition-registrations?title=<competition-title> */
 export async function getOnsiteCompetitionRegistrations(req, res) {
   const { title } = req.query;
+  const authenticatedUser = await requestUser(req);
 
-  if (!req.session.user || req.session.user.role !== "admin") {
+  if (!authenticatedUser || authenticatedUser.role !== "admin") {
     return res.status(403).json({ error: "Admin access is required" });
   }
 

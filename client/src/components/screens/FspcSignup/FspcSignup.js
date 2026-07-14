@@ -32,12 +32,17 @@ export default function FspcSignup() {
 
       if (response.ok) {
         const result = await response.json();
-        toast.success(
-          result.msg ||
-            "Registration successful. Please check your email for verification code.",
-        );
-        // Redirect to email verification page
-        navigate("/verify-email", { state: { email: email } });
+        const message = result.error
+          ? `${result.msg || "Account created."} ${result.error}`
+          : result.msg ||
+            "Registration successful. Please check your email for verification code.";
+        if (result.verificationEmailSent === false) toast.warning(message);
+        else toast.success(message);
+        if (result.verificationRequired && result.verificationEmailSent) {
+          navigate("/verify-email", { state: { email } });
+        } else {
+          navigate("/login");
+        }
       } else {
         const errorResponse = await response.json().catch(() => ({}));
         toast.error(errorResponse.error || "Registration failed", {
@@ -47,7 +52,11 @@ export default function FspcSignup() {
           closeOnClick: true,
           theme: "colored",
         });
-        if (errorResponse.needsVerification && errorResponse.email) {
+        if (
+          errorResponse.needsVerification &&
+          errorResponse.verificationRequired &&
+          errorResponse.email
+        ) {
           setTimeout(() => {
             navigate("/verify-email", {
               state: { email: errorResponse.email },

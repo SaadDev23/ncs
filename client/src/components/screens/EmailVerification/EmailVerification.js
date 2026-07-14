@@ -14,7 +14,7 @@ export default function EmailVerification() {
 
   useEffect(() => {
     if (!email) {
-      navigate("/signup");
+      navigate("/register");
       return;
     }
 
@@ -151,7 +151,14 @@ export default function EmailVerification() {
         <div className="back-to-login">
           <button
             type="button"
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/login")}
+            className="back-button"
+          >
+            Continue to Login
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/register")}
             className="back-button"
           >
             Back to Sign Up

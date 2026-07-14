@@ -24,14 +24,21 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
+app.set("trust proxy", 1);
 
 app.use(cookieParser());
 
 app.use(
   session({
-    secret: "superSecret",
-    saveUninitialized: true,
-    resave: true,
+    secret: process.env.SESSION_SECRET || "superSecret",
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    },
   }),
 );
 

@@ -48,6 +48,31 @@ function senderDetails() {
     : { name: "Neo Code Syndicate", email: configured.trim() };
 }
 
+function emailDeliveryError(error) {
+  const status = error.response?.status;
+  const providerMessage = String(error.response?.data?.message || "");
+  const normalized = providerMessage.toLowerCase();
+  let publicMessage = "The verification email could not be sent. Please try again.";
+
+  if (status === 401 || status === 403) {
+    publicMessage = "Email service authentication failed. Please update the Brevo API key.";
+  } else if (normalized.includes("sender") || normalized.includes("verified")) {
+    publicMessage = "The sender email is not verified in Brevo. Please verify EMAIL_FROM.";
+  } else if (error.code === "ECONNABORTED" || error.code === "ETIMEDOUT") {
+    publicMessage = "The email provider timed out. Please try again.";
+  }
+
+  console.error("Email delivery rejected", {
+    status,
+    code: error.code,
+    providerMessage,
+  });
+
+  const deliveryError = new Error("Email delivery failed");
+  deliveryError.publicMessage = publicMessage;
+  return deliveryError;
+}
+
 async function deliverEmail({ to, subject, html }) {
   if (process.env.BREVO_API_KEY && process.env.USE_ETHEREAL !== "true") {
     await axios.post(
@@ -124,8 +149,7 @@ export const sendVerificationEmail = async (
     }
     return true;
   } catch (error) {
-    console.error("Error sending verification email:", error);
-    throw new Error("Failed to send verification email");
+    throw emailDeliveryError(error);
   }
 };
 
@@ -174,8 +198,7 @@ export const sendPasswordResetEmail = async (email, resetCode, username) => {
     }
     return true;
   } catch (error) {
-    console.error("Error sending password reset email:", error);
-    throw new Error("Failed to send password reset email");
+    throw emailDeliveryError(error);
   }
 };
 

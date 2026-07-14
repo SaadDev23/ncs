@@ -11,11 +11,14 @@ export const verifyToken = async(req,res,next) => {
             token = token.slice(7, token.length).trimleft();
         }
 
-        const verified = jwt.verify(token, 'programmingforlife');
+        const verified = jwt.verify(
+            token,
+            process.env.JWT_SECRET || 'programmingforlife'
+        );
         req.user = verified
         next();
 
     } catch(err){
-        res.status(500).json({ error: err.message})
+        res.status(401).json({ error: 'Invalid or expired access token' })
     }
 }

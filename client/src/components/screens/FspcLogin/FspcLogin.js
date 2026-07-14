@@ -7,6 +7,7 @@ export default function FspcLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function FspcLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const response = await fetch("http://localhost:8080/api/login", {
@@ -44,7 +46,7 @@ export default function FspcLogin() {
       });
 
       if (response.ok) {
-        const { username: user, role, access } = await response.json();
+        const { access } = await response.json();
         localStorage.setItem("access", access);
         toast.success("Login successful");
         navigate("/home");
@@ -74,6 +76,8 @@ export default function FspcLogin() {
     } catch (error) {
       console.error("Error:", error);
       toast.error("Login failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -96,6 +100,7 @@ export default function FspcLogin() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -108,6 +113,7 @@ export default function FspcLogin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -129,8 +135,8 @@ export default function FspcLogin() {
             </button>
           </div>
 
-          <button type="submit" className="login-submit">
-            Login
+          <button type="submit" className="login-submit" disabled={isSubmitting}>
+            {isSubmitting ? "Signing in..." : "Login"}
           </button>
         </form>
 
