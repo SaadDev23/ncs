@@ -46,6 +46,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<FspcStart />} />
         <Route path="/login" element={<FspcLogin />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/register" element={<FspcSignup />} />
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
