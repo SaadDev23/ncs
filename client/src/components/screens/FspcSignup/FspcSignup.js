@@ -42,6 +42,13 @@ export default function FspcSignup() {
           closeOnClick: true,
           theme: "colored",
         });
+        if (errorResponse.needsVerification && errorResponse.email) {
+          setTimeout(() => {
+            navigate("/verify-email", {
+              state: { email: errorResponse.email },
+            });
+          }, 1200);
+        }
       }
     } catch (error) {
       toast.error(

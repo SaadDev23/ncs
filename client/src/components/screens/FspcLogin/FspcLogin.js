@@ -53,7 +53,8 @@ export default function FspcLogin() {
 
         // Check if email needs verification
         if (errorData.needsVerification) {
-          toast.error(
+          const notify = errorData.codeSent ? toast.success : toast.error;
+          notify(
             errorData.error || "Please verify your email before logging in",
           );
           // Optionally redirect to verification page

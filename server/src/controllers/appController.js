@@ -13,6 +13,14 @@ import {
 } from "../utils/emailService.js";
 let existUsername, sessionUser;
 
+async function issueVerificationCode(user) {
+  const verificationCode = generateVerificationCode();
+  user.verificationCode = verificationCode;
+  user.verificationCodeExpiry = new Date(Date.now() + 15 * 60 * 1000);
+  await user.save();
+  await sendVerificationEmail(user.email, verificationCode, user.username);
+}
+
 /** POST: http://localhost:8080/api/register
  * @param: {
   "username" : "example123", 
@@ -34,22 +42,51 @@ export async function register(req, res) {
       phoneNumber,
     } = req.body;
 
-    // Check existing user
-    const existUsername = await UserModel.findOne({ username }).exec();
-
-    // Check existing email
-    const existEmail = await UserModel.findOne({ email }).exec();
-
-    if (existUsername) {
-      return res.status(400).send({ error: "username already exist" });
-    }
-
-    if (existEmail) {
-      return res.status(400).send({ error: "Email already exist" });
+    if (!username || !email || !password || !confirmPass) {
+      return res.status(400).send({ error: "All fields are required" });
     }
 
     if (password !== confirmPass) {
-      return res.status(500).send({ error: "Passwords do not match" });
+      return res.status(400).send({ error: "Passwords do not match" });
+    }
+
+    const existUsername = await UserModel.findOne({ username }).exec();
+    const existEmail = await UserModel.findOne({ email }).exec();
+
+    if (existUsername) {
+      const passwordMatches = await bcrypt.compare(password, existUsername.password);
+      if (
+        !existUsername.isVerified &&
+        existUsername.email === email &&
+        passwordMatches
+      ) {
+        try {
+          await issueVerificationCode(existUsername);
+          return res.status(200).send({
+            msg: "Account already created. A new verification code was sent.",
+            email,
+            needsVerification: true,
+          });
+        } catch (emailError) {
+          console.error("Verification email resend failed:", emailError);
+          return res.status(503).send({
+            error: "Account exists, but the verification email could not be sent. Please use Resend Code.",
+            email,
+            needsVerification: true,
+          });
+        }
+      }
+      return res.status(409).send({
+        error: "This username is already registered. Please choose another username or sign in to the existing account.",
+      });
+    }
+
+    if (existEmail) {
+      return res.status(409).send({
+        error: "This email is already registered. Please sign in or reset your password.",
+        needsVerification: !existEmail.isVerified,
+        email,
+      });
     }
 
     if (password) {
@@ -71,7 +108,7 @@ export async function register(req, res) {
       });
 
       // Save user to the database
-      const savedUser = await user.save();
+      await user.save();
 
       // Send verification email
       try {
@@ -82,10 +119,10 @@ export async function register(req, res) {
         });
       } catch (emailError) {
         console.error("Email sending failed:", emailError);
-        // Delete the user if email fails
-        await UserModel.deleteOne({ _id: savedUser._id });
-        return res.status(500).send({
-          error: "Failed to send verification email. Please try again.",
+        return res.status(503).send({
+          error: "Your account was created, but the verification email could not be sent. Please use Resend Code.",
+          email,
+          needsVerification: true,
         });
       }
     }
@@ -113,15 +150,6 @@ export async function login(req, res) {
       return res.status(400).send({ error: "Incorrect username" });
     }
 
-    // Check if email is verified
-    if (!existUsername.isVerified) {
-      return res.status(403).send({
-        error: "Please verify your email before logging in",
-        needsVerification: true,
-        email: existUsername.email,
-      });
-    }
-
     // Compare the provided password with the hashed password stored in the database.
     const passwordMatch = await bcrypt.compare(
       password,
@@ -130,6 +158,26 @@ export async function login(req, res) {
 
     if (!passwordMatch) {
       return res.status(400).send({ error: "Incorrect Password" });
+    }
+
+    if (!existUsername.isVerified) {
+      try {
+        await issueVerificationCode(existUsername);
+        return res.status(403).send({
+          error: "A new verification code was sent to your email.",
+          needsVerification: true,
+          codeSent: true,
+          email: existUsername.email,
+        });
+      } catch (emailError) {
+        console.error("Verification email resend failed during login:", emailError);
+        return res.status(503).send({
+          error: "Your email is not verified and a new code could not be sent. Please use Resend Code.",
+          needsVerification: true,
+          codeSent: false,
+          email: existUsername.email,
+        });
+      }
     }
 
     // Fetch the role from the MongoDB value named "role"
@@ -333,17 +381,8 @@ export async function resendVerificationCode(req, res) {
       return res.status(400).send({ error: "Email is already verified" });
     }
 
-    // Generate new verification code
-    const verificationCode = generateVerificationCode();
-    const verificationCodeExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
-
-    user.verificationCode = verificationCode;
-    user.verificationCodeExpiry = verificationCodeExpiry;
-    await user.save();
-
-    // Send verification email
     try {
-      await sendVerificationEmail(email, verificationCode, user.username);
+      await issueVerificationCode(user);
       res.status(200).send({ msg: "Verification code sent to your email" });
     } catch (emailError) {
       console.error("Email sending failed:", emailError);
