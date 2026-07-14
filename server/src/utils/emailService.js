@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import axios from "axios";
 
 let transporter = null;
 
@@ -30,9 +31,51 @@ async function ensureTransporter() {
       user: process.env.BREVO_SMTP_USER,
       pass: process.env.BREVO_SMTP_PASS || process.env.BREVO_SMTP_KEY,
     },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
   });
 
   return transporter;
+}
+
+function senderDetails() {
+  const configured =
+    process.env.EMAIL_FROM || process.env.BREVO_FROM_EMAIL || "noreply@ncs.com";
+  const match = configured.match(/^(.*?)\s*<([^>]+)>$/);
+  return match
+    ? { name: match[1].trim() || "Neo Code Syndicate", email: match[2].trim() }
+    : { name: "Neo Code Syndicate", email: configured.trim() };
+}
+
+async function deliverEmail({ to, subject, html }) {
+  if (process.env.BREVO_API_KEY && process.env.USE_ETHEREAL !== "true") {
+    await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: senderDetails(),
+        to: [{ email: to }],
+        subject,
+        htmlContent: html,
+      },
+      {
+        headers: {
+          "api-key": process.env.BREVO_API_KEY,
+          "content-type": "application/json",
+        },
+        timeout: 15000,
+      },
+    );
+    return null;
+  }
+
+  const transporterInstance = await ensureTransporter();
+  return transporterInstance.sendMail({
+    from: senderDetails(),
+    to,
+    subject,
+    html,
+  });
 }
 
 /**
@@ -47,13 +90,7 @@ export const sendVerificationEmail = async (
   username,
 ) => {
   try {
-    const transporterInstance = await ensureTransporter();
-
     const mailOptions = {
-      from:
-        process.env.EMAIL_FROM ||
-        process.env.BREVO_FROM_EMAIL ||
-        "noreply@ncs.com",
       to: email,
       subject: "Email Verification - NCS Registration",
       html: `
@@ -79,7 +116,7 @@ export const sendVerificationEmail = async (
       `,
     };
 
-    const info = await transporterInstance.sendMail(mailOptions);
+    const info = await deliverEmail(mailOptions);
     console.log(`Verification email sent to ${email}`);
     // Show preview URL for Ethereal
     if (process.env.USE_ETHEREAL === "true") {
@@ -100,13 +137,7 @@ export const sendVerificationEmail = async (
  */
 export const sendPasswordResetEmail = async (email, resetCode, username) => {
   try {
-    const transporterInstance = await ensureTransporter();
-
     const mailOptions = {
-      from:
-        process.env.EMAIL_FROM ||
-        process.env.BREVO_FROM_EMAIL ||
-        "noreply@ncs.com",
       to: email,
       subject: "Password Reset Request - NCS",
       html: `
@@ -136,7 +167,7 @@ export const sendPasswordResetEmail = async (email, resetCode, username) => {
       `,
     };
 
-    const info = await transporterInstance.sendMail(mailOptions);
+    const info = await deliverEmail(mailOptions);
     console.log(`Password reset email sent to ${email}`);
     if (process.env.USE_ETHEREAL === "true") {
       console.log("Preview URL:", nodemailer.getTestMessageUrl(info));
@@ -160,6 +191,7 @@ export const generateVerificationCode = () => {
  */
 export const verifyEmailServiceConfig = () => {
   if (process.env.USE_ETHEREAL === "true") return true;
+  if (process.env.BREVO_API_KEY && senderDetails().email) return true;
   if (
     !process.env.BREVO_SMTP_USER ||
     !(process.env.BREVO_SMTP_PASS || process.env.BREVO_SMTP_KEY)

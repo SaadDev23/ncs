@@ -8,6 +8,7 @@ export default function FspcSignup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -16,6 +17,9 @@ export default function FspcSignup() {
   };
 
   const sendDataToBackend = async (data) => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
+    setIsSubmitting(true);
     try {
       const response = await fetch("http://localhost:8080/api/register", {
         method: "POST",
@@ -23,6 +27,7 @@ export default function FspcSignup() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+        signal: controller.signal,
       });
 
       if (response.ok) {
@@ -52,9 +57,14 @@ export default function FspcSignup() {
       }
     } catch (error) {
       toast.error(
-        "Could not reach the registration server. Please wait a moment and try again.",
+        error.name === "AbortError"
+          ? "Registration is taking too long. Please try again in a moment."
+          : "Could not reach the registration server. Please wait a moment and try again.",
       );
       console.error("Registration error:", error);
+    } finally {
+      clearTimeout(timeout);
+      setIsSubmitting(false);
     }
   };
 
@@ -115,8 +125,8 @@ export default function FspcSignup() {
             />
           </div>
 
-          <button type="submit" className="signup-button">
-            Sign-up
+          <button type="submit" className="signup-button" disabled={isSubmitting}>
+            {isSubmitting ? "Creating account..." : "Sign-up"}
           </button>
         </form>
 
