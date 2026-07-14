@@ -12,10 +12,10 @@ try {
   console.warn('Could not set custom DNS servers, continuing with system DNS:', dnsError.message || dnsError);
 }
 
-const DB_URI = process.env.MONGODB_URI || 'mongodb+srv://dbuser:Password.123@ncs.6bqd9k0.mongodb.net/?retryWrites=true&w=majority';
+const DB_URI = process.env.MONGODB_URI || process.env.MONGO_URL;
 
 if (!DB_URI) {
-  throw new Error('MONGODB_URI is not defined. Set it in server/.env or your environment.');
+  throw new Error('MONGODB_URI is not defined. Set MONGODB_URI in server/.env or your environment.');
 }
 
 async function connect() {

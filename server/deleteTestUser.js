@@ -1,10 +1,12 @@
+import "dotenv/config";
 import mongoose from "mongoose";
 
 async function deleteTestUser() {
   try {
-    const MONGO_URI =
-      process.env.MONGODB_URI ||
-      "mongodb+srv://dbuser:Password.123@ncs.6bqd9k0.mongodb.net/?retryWrites=true&w=majority";
+    const MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URL;
+    if (!MONGO_URI) {
+      throw new Error("MONGODB_URI is not defined in server/.env");
+    }
     await mongoose.connect(MONGO_URI);
     console.log("Connected to MongoDB");
 

@@ -579,6 +579,27 @@ export async function getOnsiteCompetitions(req, res) {
     res.status(500).json({ error: "Error fetching registerations" });
   }
 }
+
+/** GET: http://localhost:8080/api/onsite-competition-registrations?title=<competition-title> */
+export async function getOnsiteCompetitionRegistrations(req, res) {
+  const { title } = req.query;
+
+  if (!title) {
+    return res.status(400).json({ error: "Competition title is required" });
+  }
+
+  try {
+    const registrations = await registrationsModel
+      .find({ title })
+      .sort({ _id: -1 });
+
+    res.status(200).json(registrations);
+  } catch (error) {
+    console.error("Error fetching competition registrations", error);
+    res.status(500).json({ error: "Error fetching competition registrations" });
+  }
+}
+
 /**POST : http://localhost:8080/api/onsite-competitions */
 export async function onSiteCompetition(req, res) {
   const { title, date, max_registerations, location } = req.body;

@@ -40,6 +40,9 @@ router.route("/createResetSession").get(controller.createResetSession); // reset
 router.route("/competitions").get(controller.getComp); // reset all the variables
 router.route("/pastpapers").get(controller.getPastPapers); // reset all the variables
 router.route("/get-onsite-competitions").get(controller.getOnsiteCompetitions); // reset all the variables
+router
+  .route("/onsite-competition-registrations")
+  .get(controller.getOnsiteCompetitionRegistrations);
 
 /** PUT Methods */
 router.route("/updateuser").put(controller.updateUser); // used to update user profile
