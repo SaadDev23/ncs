@@ -35,12 +35,25 @@ app.use(
   }),
 );
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "https://ncs-iota.vercel.app",
+  "https://ncs-git-main-neo-code-syndicate.vercel.app",
+  ...(process.env.CLIENT_URLS || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+];
+
 const corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "https://ncs-git-main-neo-code-syndicate.vercel.app",
-  ],
+  origin(origin, callback) {
+    // Requests without an Origin header are server-to-server/health checks.
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`Origin ${origin} is not allowed by CORS`));
+  },
   credentials: true,
 };
 app.use(helmet());

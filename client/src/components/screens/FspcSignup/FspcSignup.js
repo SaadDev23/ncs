@@ -34,7 +34,7 @@ export default function FspcSignup() {
         // Redirect to email verification page
         navigate("/verify-email", { state: { email: email } });
       } else {
-        const errorResponse = await response.json();
+        const errorResponse = await response.json().catch(() => ({}));
         toast.error(errorResponse.error || "Registration failed", {
           position: "top-right",
           autoClose: true,
@@ -44,7 +44,9 @@ export default function FspcSignup() {
         });
       }
     } catch (error) {
-      toast.error("An error occurred during registration");
+      toast.error(
+        "Could not reach the registration server. Please wait a moment and try again.",
+      );
       console.error("Registration error:", error);
     }
   };
