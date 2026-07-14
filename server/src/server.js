@@ -36,7 +36,11 @@ app.use(
 );
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "http://localhost:3001"], // Update with your frontend's origin
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://ncs-git-main-neo-code-syndicate.vercel.app",
+  ],
   credentials: true,
 };
 app.use(helmet());
