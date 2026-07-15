@@ -1,47 +1,33 @@
 import nodemailer from "nodemailer";
 import axios from "axios";
+import crypto from "crypto";
 
 let transporter = null;
 
 async function ensureTransporter() {
   if (transporter) return transporter;
 
-  // If explicitly requested, use Ethereal (dev/test SMTP)
-  if (process.env.USE_ETHEREAL === "true") {
-    const testAccount = await nodemailer.createTestAccount();
-    transporter = nodemailer.createTransport({
-      host: testAccount.smtp.host,
-      port: testAccount.smtp.port,
-      secure: testAccount.smtp.secure,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
-    console.log("Using Ethereal test account for email (development).");
-    return transporter;
+  if (process.env.USE_ETHEREAL !== "true") {
+    throw new Error("Ethereal transport is only available in local development");
   }
 
-  // Default to Brevo SMTP
+  const testAccount = await nodemailer.createTestAccount();
   transporter = nodemailer.createTransport({
-    host: process.env.BREVO_SMTP_HOST || "smtp-relay.brevo.com",
-    port: process.env.BREVO_SMTP_PORT || 587,
-    secure: false,
+    host: testAccount.smtp.host,
+    port: testAccount.smtp.port,
+    secure: testAccount.smtp.secure,
     auth: {
-      user: process.env.BREVO_SMTP_USER,
-      pass: process.env.BREVO_SMTP_PASS || process.env.BREVO_SMTP_KEY,
+      user: testAccount.user,
+      pass: testAccount.pass,
     },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000,
   });
-
+  console.log("Using Ethereal test account for email (development).");
   return transporter;
 }
 
 function senderDetails() {
   const configured =
-    process.env.EMAIL_FROM || process.env.BREVO_FROM_EMAIL || "noreply@ncs.com";
+    process.env.EMAIL_FROM || "saadiqbal.halai@gmail.com";
   const match = configured.match(/^(.*?)\s*<([^>]+)>$/);
   return match
     ? { name: match[1].trim() || "Neo Code Syndicate", email: match[2].trim() }
@@ -49,15 +35,17 @@ function senderDetails() {
 }
 
 function emailDeliveryError(error) {
+  if (error.publicMessage) return error;
+
   const status = error.response?.status;
   const providerMessage = String(error.response?.data?.message || "");
   const normalized = providerMessage.toLowerCase();
-  let publicMessage = "The verification email could not be sent. Please try again.";
+  let publicMessage = "The email could not be sent. Please try again.";
 
   if (status === 401 || status === 403) {
-    publicMessage = "Email service authentication failed. Please update the Brevo API key.";
+    publicMessage = "Email service authentication failed. Please update the Resend API key.";
   } else if (normalized.includes("sender") || normalized.includes("verified")) {
-    publicMessage = "The sender email is not verified in Brevo. Please verify EMAIL_FROM.";
+    publicMessage = "The sender email is not verified in Resend. Please verify EMAIL_FROM.";
   } else if (error.code === "ECONNABORTED" || error.code === "ETIMEDOUT") {
     publicMessage = "The email provider timed out. Please try again.";
   }
@@ -74,33 +62,37 @@ function emailDeliveryError(error) {
 }
 
 async function deliverEmail({ to, subject, html }) {
-  if (process.env.BREVO_API_KEY && process.env.USE_ETHEREAL !== "true") {
-    await axios.post(
-      "https://api.brevo.com/v3/smtp/email",
-      {
-        sender: senderDetails(),
-        to: [{ email: to }],
-        subject,
-        htmlContent: html,
-      },
-      {
-        headers: {
-          "api-key": process.env.BREVO_API_KEY,
-          "content-type": "application/json",
-        },
-        timeout: 15000,
-      },
-    );
-    return null;
+  const sender = senderDetails();
+
+  if (process.env.USE_ETHEREAL === "true") {
+    const transporterInstance = await ensureTransporter();
+    return transporterInstance.sendMail({ from: sender, to, subject, html });
   }
 
-  const transporterInstance = await ensureTransporter();
-  return transporterInstance.sendMail({
-    from: senderDetails(),
-    to,
-    subject,
-    html,
-  });
+  if (!process.env.RESEND_API_KEY) {
+    const configError = new Error("RESEND_API_KEY is not configured");
+    configError.publicMessage =
+      "Email service is not configured. Please add RESEND_API_KEY.";
+    throw configError;
+  }
+
+  await axios.post(
+    "https://api.resend.com/emails",
+    {
+      from: `${sender.name} <${sender.email}>`,
+      to: [to],
+      subject,
+      html,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      timeout: 15000,
+    },
+  );
+  return null;
 }
 
 /**
@@ -206,7 +198,7 @@ export const sendPasswordResetEmail = async (email, resetCode, username) => {
  * Generate random 6-digit code
  */
 export const generateVerificationCode = () => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+  return crypto.randomInt(100000, 999999).toString();
 };
 
 /**
@@ -214,13 +206,10 @@ export const generateVerificationCode = () => {
  */
 export const verifyEmailServiceConfig = () => {
   if (process.env.USE_ETHEREAL === "true") return true;
-  if (process.env.BREVO_API_KEY && senderDetails().email) return true;
-  if (
-    !process.env.BREVO_SMTP_USER ||
-    !(process.env.BREVO_SMTP_PASS || process.env.BREVO_SMTP_KEY)
-  ) {
+  if (process.env.RESEND_API_KEY && senderDetails().email) return true;
+  if (!process.env.RESEND_API_KEY) {
     console.warn(
-      "⚠️ Brevo SMTP credentials not configured. Email functionality will be disabled.",
+      "RESEND_API_KEY is not configured. Email functionality will be disabled.",
     );
     return false;
   }
