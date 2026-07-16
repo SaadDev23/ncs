@@ -6,7 +6,7 @@ import UserModel from "../model/User.model.js";
 async function authenticatedUser(req) {
     const userId = req.user?.id || req.session?.user?.id;
     if (!userId) return null;
-    return UserModel.findById(userId).select("_id username role").lean();
+    return UserModel.findById(userId).select("_id username email role profilePicture").lean();
 }
 
 function findCommentIndex(comments, commentId) {
@@ -17,18 +17,26 @@ function findCommentIndex(comments, commentId) {
 
 export const createPost = async (req, res) => {
     try {
-        const { description, userId, userName } = req.body;
-        const user = await UserModel.findById(userId);
+        const { description = "", image = "" } = req.body;
+        const user = await authenticatedUser(req);
 
         if (!user) {
-            return res.status(404).send({ error: 'User not found' });
+            return res.status(401).send({ error: "Please log in to create a post." });
+        }
+        const postText = typeof description === "string" ? description.trim() : "";
+        if (!postText && !image) {
+            return res.status(400).send({ error: "Write something or add an image before posting." });
+        }
+        if (image && (typeof image !== "string" || !image.startsWith("data:image/") || image.length > 4 * 1024 * 1024)) {
+            return res.status(400).send({ error: "Please choose a valid image smaller than 2 MB." });
         }
 
         const newPost = new Post({
-            userId: userId,
-            userName: userName,
+            userId: user._id,
+            userName: user.username,
             email: user.email,
-            description,
+            description: postText,
+            image,
             comments: [],
             // Always use the saved account picture instead of browser-provided data.
             profilepicture: user.profilePicture || ""
@@ -36,11 +44,7 @@ export const createPost = async (req, res) => {
 
         await newPost.save();
 
-        const posts = await Post.find();
-
-        console.log("New Post:", newPost); // Add this log
-
-        res.status(201).json(posts);
+        res.status(201).json({ post: newPost });
     } catch (err) {
         console.error("Error Creating Post:", err); // Add this log
         res.status(409).json({ message: err.message });

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import TextareaAutosize from "react-textarea-autosize";
 import { Avatar } from "../Avatar/Avatar";
@@ -13,6 +13,9 @@ export const CreatPost = ({
   profilepicture,
 }) => {
   const [postContent, setPostContent] = useState("");
+  const [postImage, setPostImage] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
+  const imageInputRef = useRef(null);
 
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
@@ -40,20 +43,44 @@ export const CreatPost = ({
     setPostContent(event.target.value);
   };
 
+  const handleImageChange = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please choose an image file.");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Please choose an image smaller than 2 MB.");
+      event.target.value = "";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => setPostImage(String(reader.result));
+    reader.onerror = () => toast.error("Unable to read that image.");
+    reader.readAsDataURL(file);
+  };
+
   const handleCreatePost = async () => {
-    console.log(`user info is ${userInfo}`);
     if (!userInfo) {
-      console.error("User information not available");
+      toast.error("Please log in before creating a post.");
+      return;
+    }
+    if (!postContent.trim() && !postImage) {
+      toast.error("Write something or add an image before posting.");
       return;
     }
 
     const data = {
       userId: userInfo.id,
       userName: userInfo.username,
-      description: postContent,
-      profilepicture: userInfo.profilepicture,
+      description: postContent.trim(),
+      image: postImage,
     };
 
+    setIsCreating(true);
     try {
       const response = await fetch("http://localhost:8080/posts/postcreate", {
         method: "POST",
@@ -65,17 +92,22 @@ export const CreatPost = ({
       });
 
       if (response.ok) {
-        console.log("Post Successful");
         setPostContent("");
+        setPostImage("");
+        if (imageInputRef.current) imageInputRef.current.value = "";
         navigate(0);
         if (onPostCreated) {
           onPostCreated();
         }
       } else {
-        console.error("Post Failed");
+        const result = await response.json().catch(() => ({}));
+        toast.error(result.error || result.message || "Unable to create post.");
       }
     } catch (error) {
       console.error("Error:", error);
+      toast.error("Unable to create post. Please try again.");
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -102,9 +134,43 @@ export const CreatPost = ({
           type="submit"
           className="text-wrapper-3 button"
           onClick={handleCreatePost}
+          disabled={isCreating}
         >
-          Create
+          {isCreating ? "Posting..." : "Create"}
         </button>
+      </div>
+      <div className="post-image-tools">
+        <input
+          ref={imageInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="post-image-input"
+        />
+        <button
+          type="button"
+          className="add-image-button"
+          onClick={() => imageInputRef.current?.click()}
+          disabled={isCreating}
+        >
+          Add Photo
+        </button>
+        {postImage && (
+          <div className="post-image-preview-wrap">
+            <img className="post-image-preview" src={postImage} alt="Selected post" />
+            <button
+              type="button"
+              className="remove-image-button"
+              onClick={() => {
+                setPostImage("");
+                if (imageInputRef.current) imageInputRef.current.value = "";
+              }}
+              disabled={isCreating}
+            >
+              Remove
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

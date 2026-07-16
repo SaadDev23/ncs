@@ -132,6 +132,7 @@ export default function Main() {
                   <Post
                     key={item._id}
                     profilepicture={item.profilepicture}
+                    postImage={item.image}
                     idd={item._id}
                     postUserId={item.userId}
                     dark="on"

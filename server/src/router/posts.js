@@ -8,7 +8,7 @@ const router = express.Router(); // Use express.Router() here
 // router.get("/", verifyToken, getFeedPosts);
 router.get("/", getFeedPosts);
 router.get("/:username/posts", verifyToken, getUserPosts);
-router.post("/postcreate", createPost);
+router.post("/postcreate", verifyToken, createPost);
 router.put("/update-likes", updatePostLikes);
 router.post("/:id/comment", verifyToken, addComment);
 router.patch("/:id/comment/:commentId", verifyToken, editComment);

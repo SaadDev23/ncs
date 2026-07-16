@@ -151,6 +151,17 @@
   width: 100%;
 }
 
+.post-content-image {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: block;
+  margin-top: 4px;
+  max-height: 460px;
+  max-width: 100%;
+  object-fit: contain;
+  width: auto;
+}
+
 .post .tags-3 {
   align-items: flex-start;
   display: inline-flex;

@@ -23,6 +23,7 @@ export const Post = ({
   postUserId,
   onPostUpdated,
   onPostDeleted,
+  postImage,
 }) => {
   const navigate = useNavigate();
   const comments = Array.isArray(commentsProp) ? commentsProp : [];
@@ -329,6 +330,13 @@ export const Post = ({
                 />
               ) : (
                 <p className="bitcoin-has-tumbled">{postText}</p>
+              )}
+              {postImage && (
+                <img
+                  className="post-content-image"
+                  src={postImage}
+                  alt={`${text1}'s post attachment`}
+                />
               )}
               {(isPostOwner || canDeletePost) && (
                 <div className="post-owner-actions">

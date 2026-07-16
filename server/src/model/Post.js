@@ -18,7 +18,12 @@ const postSchema = mongoose.Schema(
     location: String,
     description: {
         type: String,
-        required : true
+        required: false,
+        default: ""
+    },
+    image: {
+        type: String,
+        default: ""
     },
     profilepicture: String,
     userPicturePath: String,
