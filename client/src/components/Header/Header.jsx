@@ -81,8 +81,10 @@ export const Header = ({ page }) => {
     <div id="navbar" className="header">
       <div className="main">
         <div className="div-2">
-          <img className="logo" alt="Logo" src="/imgHome/logo-1.png" />
-          <div className="hipnode">Neo Code Syndicate</div>
+          <Link to="/home" className="brand-link" aria-label="Go to homepage">
+            <img className="logo" alt="Neo Code Syndicate logo" src="/imgHome/logo-1.png" />
+            <div className="hipnode">Neo Code Syndicate</div>
+          </Link>
         </div>
         <div className="main-2">
           <div className="icons">

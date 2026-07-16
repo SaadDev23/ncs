@@ -29,6 +29,14 @@
     gap: 10px;
     position: relative;
   }
+
+  .header .brand-link {
+    align-items: center;
+    color: inherit;
+    display: inline-flex;
+    gap: 10px;
+    text-decoration: none;
+  }
   
   .header .logo {
     flex: 0 0 auto;
