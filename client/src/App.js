@@ -57,6 +57,7 @@ export default function App() {
             <Route path="/home" element={<Main />} />
             <Route path="/admin/home" element={<Admin />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:userId" element={<Profile />} />
             <Route
               path="/register-competition"
               element={<RegistrationPage />}

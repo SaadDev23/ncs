@@ -17,9 +17,16 @@ export const PopularTags = ({
   text2 ,
   text3 ,
   text4 ,
+  to = "/register-competition",
 }) => {
+  const registrationsLeft = Math.max(0, Number(text2 || 0) - Number(text3 || 0));
+
   return (
-    <div className={`popular-tags ${dark} ${className}`}>
+    <Link
+      to={to}
+      className={`popular-tags popular-tags-link ${dark} ${className}`}
+      aria-label={`Register for ${text1}`}
+    >
       <div className={`div ${mainClassName}`}>
         <div className="tags">
           <div className="tag">
@@ -28,13 +35,13 @@ export const PopularTags = ({
             </div>
             <div className="name">
               <div className="javascript">{text1}</div>
-              <p className="element-posted-by">{text2-text3} Registeration left</p>
+              <p className="element-posted-by">{registrationsLeft} registrations left</p>
               <p className="tag-location">{text4}</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

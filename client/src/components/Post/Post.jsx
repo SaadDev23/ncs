@@ -4,6 +4,7 @@ import { IconLike } from "../IconLike";
 import { Avatar } from "../Avatar/Avatar";
 import "./style.css";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 export const Post = ({
@@ -23,6 +24,7 @@ export const Post = ({
   onPostUpdated,
   onPostDeleted,
 }) => {
+  const navigate = useNavigate();
   const comments = Array.isArray(commentsProp) ? commentsProp : [];
 
   const [isLiked, setIsLiked] = useState(false);
@@ -235,6 +237,9 @@ export const Post = ({
 
   const isPostOwner = userInfo?.id && String(postUserId) === String(userInfo.id);
   const canDeletePost = isPostOwner || userInfo?.role === "admin";
+  const openProfile = (userId) => {
+    if (userId) navigate(`/profile/${encodeURIComponent(userId)}`);
+  };
 
   const saveEditedPost = async () => {
     const description = postText.trim();
@@ -294,7 +299,16 @@ export const Post = ({
     <div className={`post dark-32-${dark} ${className}`}>
       <div className="main-4">
         <div className="data">
-          <div className="post-avatar-wrap">
+          <div
+            className="post-avatar-wrap post-profile-link"
+            onClick={() => openProfile(postUserId)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") openProfile(postUserId);
+            }}
+            role="link"
+            tabIndex={postUserId ? 0 : -1}
+            aria-label={`Open ${text1}'s profile`}
+          >
             <Avatar
               username={text1}
               profilepicture={profilepicture}
@@ -336,7 +350,17 @@ export const Post = ({
               <div className="name-3">
                 <div className="name-4">
                   <div className="name-5">
-                    <div className="pavel-gvay">{text1}</div>
+                    <div
+                      className="pavel-gvay post-profile-name"
+                      onClick={() => openProfile(postUserId)}
+                      role="link"
+                      tabIndex={postUserId ? 0 : -1}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") openProfile(postUserId);
+                      }}
+                    >
+                      {text1}
+                    </div>
                   </div>
                   <div className="element-weeks-ago">{formattedDate}</div>
                 </div>
@@ -372,7 +396,14 @@ export const Post = ({
 
             return (
             <div key={key} className="post-comment-item">
-              <span className="post-comment-author">{c.userName}:</span>
+              <button
+                type="button"
+                className="post-comment-author post-comment-author-link"
+                onClick={() => openProfile(c.userId)}
+                disabled={!c.userId}
+              >
+                {c.userName}:
+              </button>
               {isEditing ? (
                 <input
                   className="post-comment-edit-input"
