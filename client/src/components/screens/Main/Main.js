@@ -133,6 +133,7 @@ export default function Main() {
                     key={item._id}
                     profilepicture={item.profilepicture}
                     idd={item._id}
+                    postUserId={item.userId}
                     dark="on"
                     text={item.description}
                     text1={item.userName}
@@ -140,6 +141,15 @@ export default function Main() {
                     text3={item.likes}
                     text4={item.comments?.length ?? 0}
                     comments={item.comments || []}
+                    onPostUpdated={(updatedPost) => {
+                      if (!updatedPost) return;
+                      setPosts((currentPosts) => currentPosts.map((post) =>
+                        post._id === updatedPost._id ? { ...post, ...updatedPost } : post,
+                      ));
+                    }}
+                    onPostDeleted={(postId) => {
+                      setPosts((currentPosts) => currentPosts.filter((post) => post._id !== postId));
+                    }}
                   />
                 ))}
               </div>

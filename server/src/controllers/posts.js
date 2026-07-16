@@ -230,6 +230,57 @@ export const deleteComment = async (req, res) => {
     }
 };
 
+/** Edit a post. Only its author may edit it. */
+export const editPost = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { description } = req.body;
+        const user = await authenticatedUser(req);
+
+        if (!user) return res.status(401).json({ message: "Please log in to edit a post." });
+        if (!description || !description.trim()) {
+            return res.status(400).json({ message: "Post text is required." });
+        }
+
+        const post = await Post.findById(id);
+        if (!post) return res.status(404).json({ message: "Post not found." });
+        if (String(post.userId) !== String(user._id)) {
+            return res.status(403).json({ message: "You can only edit your own posts." });
+        }
+
+        post.description = description.trim();
+        await post.save();
+        return res.status(200).json({ post });
+    } catch (err) {
+        console.error("Error editing post:", err);
+        return res.status(500).json({ message: "Unable to edit post." });
+    }
+};
+
+/** Delete a post. Its author or an admin may delete it. */
+export const deletePost = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await authenticatedUser(req);
+
+        if (!user) return res.status(401).json({ message: "Please log in to delete a post." });
+
+        const post = await Post.findById(id);
+        if (!post) return res.status(404).json({ message: "Post not found." });
+
+        const isPostOwner = String(post.userId) === String(user._id);
+        if (!isPostOwner && user.role !== "admin") {
+            return res.status(403).json({ message: "You can only delete your own posts." });
+        }
+
+        await Post.deleteOne({ _id: post._id });
+        return res.status(200).json({ message: "Post deleted successfully." });
+    } catch (err) {
+        console.error("Error deleting post:", err);
+        return res.status(500).json({ message: "Unable to delete post." });
+    }
+};
+
 /** Update */
 export const likePost = async (req, res) => {
     try {

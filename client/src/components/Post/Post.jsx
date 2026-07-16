@@ -18,7 +18,10 @@ export const Post = ({
   iconLikeIconLikeClassName,
   iconLikeHeartClassName,
   profilepicture,
-  idd
+  idd,
+  postUserId,
+  onPostUpdated,
+  onPostDeleted,
 }) => {
   const comments = Array.isArray(commentsProp) ? commentsProp : [];
 
@@ -31,6 +34,9 @@ export const Post = ({
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingCommentText, setEditingCommentText] = useState("");
   const [commentActionId, setCommentActionId] = useState(null);
+  const [postText, setPostText] = useState(text);
+  const [isEditingPost, setIsEditingPost] = useState(false);
+  const [isSavingPost, setIsSavingPost] = useState(false);
 
   useEffect(() => {
     setLocalComments(comments);
@@ -39,6 +45,10 @@ export const Post = ({
   useEffect(() => {
     setLocalLikeCount(Number(text3) || 0);
   }, [text3]);
+
+  useEffect(() => {
+    setPostText(text);
+  }, [text]);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -135,7 +145,13 @@ export const Post = ({
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: trimmed }),
+        // Keep these fields for compatibility with an older deployed backend.
+        // The current backend derives the author from the authenticated session.
+        body: JSON.stringify({
+          userId: userInfo.id,
+          userName: userInfo.username,
+          text: trimmed,
+        }),
       });
       const result = await response.json();
       if (response.ok && result.comments) {
@@ -217,6 +233,56 @@ export const Post = ({
     }
   };
 
+  const isPostOwner = userInfo?.id && String(postUserId) === String(userInfo.id);
+  const canDeletePost = isPostOwner || userInfo?.role === "admin";
+
+  const saveEditedPost = async () => {
+    const description = postText.trim();
+    if (!description) {
+      toast.error("Post cannot be empty");
+      return;
+    }
+
+    setIsSavingPost(true);
+    try {
+      const response = await fetch(`http://localhost:8080/posts/${idd}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ description }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.message || "Failed to edit post");
+      setPostText(result.post?.description || description);
+      setIsEditingPost(false);
+      onPostUpdated?.(result.post);
+      toast.success("Post updated", { autoClose: 900, hideProgressBar: true, position: "top-center" });
+    } catch (error) {
+      toast.error(error.message || "Failed to edit post");
+    } finally {
+      setIsSavingPost(false);
+    }
+  };
+
+  const deletePost = async () => {
+    if (!window.confirm("Delete this post and all of its comments?")) return;
+
+    setIsSavingPost(true);
+    try {
+      const response = await fetch(`http://localhost:8080/posts/${idd}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.message || "Failed to delete post");
+      onPostDeleted?.(idd);
+      toast.success("Post deleted", { autoClose: 900, hideProgressBar: true, position: "top-center" });
+    } catch (error) {
+      toast.error(error.message || "Failed to delete post");
+      setIsSavingPost(false);
+    }
+  };
+
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "numeric",
@@ -239,7 +305,32 @@ export const Post = ({
           </div>
           <div className="data-2">
             <div className="title-3">
-              <p className="bitcoin-has-tumbled">{text}</p>
+              {isEditingPost ? (
+                <textarea
+                  className="post-edit-input"
+                  value={postText}
+                  onChange={(event) => setPostText(event.target.value)}
+                  maxLength="5000"
+                  autoFocus
+                />
+              ) : (
+                <p className="bitcoin-has-tumbled">{postText}</p>
+              )}
+              {(isPostOwner || canDeletePost) && (
+                <div className="post-owner-actions">
+                  {isEditingPost ? (
+                    <>
+                      <button type="button" onClick={saveEditedPost} disabled={isSavingPost}>Save</button>
+                      <button type="button" onClick={() => { setPostText(text); setIsEditingPost(false); }} disabled={isSavingPost}>Cancel</button>
+                    </>
+                  ) : (
+                    <>
+                      {isPostOwner && <button type="button" onClick={() => setIsEditingPost(true)}>Edit post</button>}
+                      {canDeletePost && <button type="button" className="delete-post-button" onClick={deletePost} disabled={isSavingPost}>Delete post</button>}
+                    </>
+                  )}
+                </div>
+              )}
             </div>
             <div className="user">
               <div className="name-3">

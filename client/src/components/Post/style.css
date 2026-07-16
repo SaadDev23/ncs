@@ -82,6 +82,41 @@
   word-break: break-word;
 }
 
+.post-owner-actions {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.post-owner-actions button {
+  background: transparent;
+  border: 0;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+}
+
+.post-owner-actions button:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.post-owner-actions .delete-post-button {
+  color: #ef5350;
+}
+
+.post-edit-input {
+  background: var(--bg-input);
+  border: 1px solid var(--border-focus);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font: inherit;
+  line-height: 1.6;
+  min-height: 84px;
+  padding: 9px 10px;
+  resize: vertical;
+  width: 100%;
+}
+
 .post .tags-3 {
   align-items: flex-start;
   display: inline-flex;
