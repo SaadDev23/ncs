@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import { IconLike } from "../IconLike";
+import { Avatar } from "../Avatar/Avatar";
 import "./style.css";
 import { toast } from "react-toastify";
 
@@ -168,7 +169,12 @@ export const Post = ({
       <div className="main-4">
         <div className="data">
           <div className="post-avatar-wrap">
-            <img className="post-image" src={`data:image/${profilepicture};base64, ${profilepicture}`} alt="Post Image" />
+            <Avatar
+              username={text1}
+              profilepicture={profilepicture}
+              alt={`${text1}'s profile picture`}
+              className="post-image"
+            />
             <span className="post-status-dot" />
           </div>
           <div className="data-2">

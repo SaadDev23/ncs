@@ -5,7 +5,7 @@ import UserModel from "../model/User.model.js";
 
 export const createPost = async (req, res) => {
     try {
-        const { description, profilepicture, userId, userName } = req.body;
+        const { description, userId, userName } = req.body;
         const user = await UserModel.findById(userId);
 
         if (!user) {
@@ -18,7 +18,8 @@ export const createPost = async (req, res) => {
             email: user.email,
             description,
             comments: [],
-            profilepicture: profilepicture
+            // Always use the saved account picture instead of browser-provided data.
+            profilepicture: user.profilePicture || ""
         });
 
         await newPost.save();
@@ -88,8 +89,21 @@ export const updatePostLikes = async (req, res) => {
 /** Read */
 export const getFeedPosts = async (req, res) => {
     try {
-        const posts = await Post.find().sort({ createdAt: -1 });
-        res.status(200).json(posts);
+        const posts = await Post.find().sort({ createdAt: -1 }).lean();
+        const authorIds = posts.map((post) => post.userId).filter(Boolean);
+        const authors = await UserModel.find({ _id: { $in: authorIds } })
+            .select("_id profilePicture")
+            .lean();
+        const pictureByAuthorId = new Map(
+            authors.map((author) => [String(author._id), author.profilePicture || ""]),
+        );
+        const postsWithCurrentProfilePictures = posts.map((post) => ({
+            ...post,
+            profilepicture:
+                pictureByAuthorId.get(String(post.userId)) || post.profilepicture || "",
+        }));
+
+        res.status(200).json(postsWithCurrentProfilePictures);
     } catch (err) {
         res.status(404).json({ message: err.message });
     }

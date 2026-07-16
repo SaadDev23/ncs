@@ -6,6 +6,7 @@ Please share your feedback here: https://form.asana.com/?k=uvp-HPgd3_hyoXRBw1IcN
 import PropTypes from "prop-types";
 import React from "react";
 import { Button } from "../Button";
+import { Avatar } from "../../Avatar/Avatar";
 import "./style.css";
 
 export const CreatPost = ({ dark, className, hasInputData = true, buttonText = "Create Post" , profilepicture}) => {
@@ -13,7 +14,11 @@ export const CreatPost = ({ dark, className, hasInputData = true, buttonText = "
     <div className={`creat-post dark-18-${dark} ${className}`}>
       <div className="main-2">
         <div className="abatars">
-          <img className="mask-group" alt="Mask group" src={`data:image/${profilepicture};base64, ${profilepicture}`} />
+          <Avatar
+            profilepicture={profilepicture}
+            alt="Profile"
+            className="mask-group"
+          />
         </div>
         {hasInputData && (
           <div className="input-data">
