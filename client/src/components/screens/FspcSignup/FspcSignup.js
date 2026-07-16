@@ -38,10 +38,10 @@ export default function FspcSignup() {
             "Registration successful. Please check your email for verification code.";
         if (result.verificationEmailSent === false) toast.warning(message);
         else toast.success(message);
-        if (result.verificationRequired && result.verificationEmailSent) {
+        if (result.verificationEmailSent) {
           navigate("/verify-email", { state: { email } });
         } else {
-          navigate("/login");
+          toast.error(result.error || "The verification email could not be sent. Please try again.");
         }
       } else {
         const errorResponse = await response.json().catch(() => ({}));
@@ -54,7 +54,6 @@ export default function FspcSignup() {
         });
         if (
           errorResponse.needsVerification &&
-          errorResponse.verificationRequired &&
           errorResponse.email
         ) {
           setTimeout(() => {

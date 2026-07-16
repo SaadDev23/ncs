@@ -1,4 +1,5 @@
 import UserModel from "../model/User.model.js";
+import PendingRegistrationModel from "../model/PendingRegistration.model.js";
 import UpCompModel from "../model/UpComp.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -13,6 +14,10 @@ import {
 } from "../utils/emailService.js";
 const jwtSecret = process.env.JWT_SECRET || "programmingforlife";
 const verificationRequired = process.env.REQUIRE_EMAIL_VERIFICATION === "true";
+
+function registrationExpiry() {
+  return new Date(Date.now() + 15 * 60 * 1000);
+}
 
 async function requestUser(req) {
   if (req.session?.user) return req.session.user;
@@ -74,21 +79,23 @@ export async function register(req, res) {
       return res.status(400).send({ error: "Passwords do not match" });
     }
 
-    const existUsername = await UserModel.findOne({ username }).exec();
-    const existEmail = await UserModel.findOne({ email }).exec();
+    const normalizedUsername = username.trim();
+    const normalizedEmail = email.trim().toLowerCase();
+    const existUsername = await UserModel.findOne({ username: normalizedUsername }).exec();
+    const existEmail = await UserModel.findOne({ email: normalizedEmail }).exec();
 
     if (existUsername) {
       const passwordMatches = await bcrypt.compare(password, existUsername.password);
       if (
         !existUsername.isVerified &&
-        existUsername.email === email &&
+        existUsername.email === normalizedEmail &&
         passwordMatches
       ) {
         try {
           await issueVerificationCode(existUsername);
           return res.status(200).send({
             msg: "Account already created. A new verification code was sent.",
-            email,
+            email: normalizedEmail,
             needsVerification: true,
             verificationEmailSent: true,
             verificationRequired,
@@ -100,7 +107,7 @@ export async function register(req, res) {
               emailError.publicMessage ||
               "The verification email could not be sent.",
             msg: "Your account already exists. You can sign in with your username and password.",
-            email,
+            email: normalizedEmail,
             needsVerification: true,
             verificationEmailSent: false,
             verificationRequired,
@@ -116,54 +123,87 @@ export async function register(req, res) {
       return res.status(409).send({
         error: "This email is already registered. Please sign in or reset your password.",
         needsVerification: !existEmail.isVerified,
-        email,
+        email: normalizedEmail,
         verificationRequired,
       });
     }
 
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const verificationCode = generateVerificationCode();
-      const verificationCodeExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+    const pendingUsername = await PendingRegistrationModel.findOne({
+      username: normalizedUsername,
+    });
+    const pendingEmail = await PendingRegistrationModel.findOne({
+      email: normalizedEmail,
+    });
 
-      const user = new UserModel({
-        username,
-        password: hashedPassword,
-        profile: profile || "",
-        email,
-        role: "student",
-        picturePath,
-        likedPosts: [],
-        isVerified: false,
-        verificationCode,
-        verificationCodeExpiry,
-      });
+    if (pendingUsername || pendingEmail) {
+      const pending = pendingUsername || pendingEmail;
+      const passwordMatches =
+        pending.username === normalizedUsername &&
+        pending.email === normalizedEmail &&
+        (await bcrypt.compare(password, pending.password));
 
-      // Save user to the database
-      await user.save();
-
-      // Send verification email
-      try {
-        await sendVerificationEmail(email, verificationCode, username);
-        res.status(201).send({
-          msg: "User registered successfully. Please check your email for verification code.",
-          email: email,
-          verificationEmailSent: true,
-          verificationRequired,
-        });
-      } catch (emailError) {
-        console.error("Email sending failed:", emailError);
-        return res.status(201).send({
-          error:
-            emailError.publicMessage ||
-            "Your account was created, but the verification email could not be sent.",
-          msg: "Account created. You can sign in with your username and password.",
-          email,
-          needsVerification: true,
-          verificationEmailSent: false,
-          verificationRequired,
+      if (!passwordMatches) {
+        return res.status(409).send({
+          error: "This username or email is awaiting verification. Use the original details or choose another one.",
         });
       }
+
+      pending.verificationCode = generateVerificationCode();
+      pending.verificationCodeExpiry = registrationExpiry();
+      await pending.save();
+
+      try {
+        await sendVerificationEmail(
+          normalizedEmail,
+          pending.verificationCode,
+          normalizedUsername,
+        );
+        return res.status(200).send({
+          msg: "A new verification code was sent. Finish verification to create your account.",
+          email: normalizedEmail,
+          verificationEmailSent: true,
+          needsVerification: true,
+        });
+      } catch (emailError) {
+        return res.status(503).send({
+          error: emailError.publicMessage || "The verification email could not be sent.",
+          email: normalizedEmail,
+          pendingRegistration: true,
+        });
+      }
+    }
+
+    const pending = new PendingRegistrationModel({
+      username: normalizedUsername,
+      email: normalizedEmail,
+      password: await bcrypt.hash(password, 10),
+      profile: profile || "",
+      picturePath: picturePath || "",
+      phoneNumber: phoneNumber || "",
+      verificationCode: generateVerificationCode(),
+      verificationCodeExpiry: registrationExpiry(),
+    });
+    await pending.save();
+
+    try {
+      await sendVerificationEmail(
+        normalizedEmail,
+        pending.verificationCode,
+        normalizedUsername,
+      );
+      return res.status(201).send({
+        msg: "Verification code sent. Enter it to create your account.",
+        email: normalizedEmail,
+        verificationEmailSent: true,
+        needsVerification: true,
+      });
+    } catch (emailError) {
+      console.error("Verification email sending failed:", emailError);
+      return res.status(503).send({
+        error: emailError.publicMessage || "The verification email could not be sent.",
+        email: normalizedEmail,
+        pendingRegistration: true,
+      });
     }
   } catch (error) {
     // Handle the error
@@ -366,7 +406,50 @@ export async function verifyEmail(req, res) {
         .send({ error: "Email and verification code are required" });
     }
 
-    const user = await UserModel.findOne({ email });
+    const normalizedEmail = email.trim().toLowerCase();
+    const pending = await PendingRegistrationModel.findOne({
+      email: normalizedEmail,
+    });
+
+    if (pending) {
+      if (pending.verificationCode !== verificationCode) {
+        return res.status(400).send({ error: "Invalid verification code" });
+      }
+
+      if (new Date() > pending.verificationCodeExpiry) {
+        return res.status(400).send({ error: "Verification code has expired" });
+      }
+
+      const existingUser = await UserModel.findOne({
+        $or: [{ username: pending.username }, { email: pending.email }],
+      });
+      if (existingUser) {
+        return res.status(409).send({
+          error: "This username or email is already registered. Please sign in instead.",
+        });
+      }
+
+      await UserModel.create({
+        username: pending.username,
+        password: pending.password,
+        profile: pending.profile,
+        email: pending.email,
+        role: "student",
+        picturePath: pending.picturePath,
+        likedPosts: [],
+        isVerified: true,
+        verificationCode: null,
+        verificationCodeExpiry: null,
+      });
+      await PendingRegistrationModel.deleteOne({ _id: pending._id });
+
+      return res.status(201).send({
+        msg: "Email verified and account created successfully. You can now login.",
+      });
+    }
+
+    // Supports accounts that were created before pending registration was added.
+    const user = await UserModel.findOne({ email: normalizedEmail });
 
     if (!user) {
       return res.status(404).send({ error: "User not found" });
@@ -414,7 +497,32 @@ export async function resendVerificationCode(req, res) {
       return res.status(400).send({ error: "Email is required" });
     }
 
-    const user = await UserModel.findOne({ email });
+    const normalizedEmail = email.trim().toLowerCase();
+    const pending = await PendingRegistrationModel.findOne({
+      email: normalizedEmail,
+    });
+
+    if (pending) {
+      pending.verificationCode = generateVerificationCode();
+      pending.verificationCodeExpiry = registrationExpiry();
+      await pending.save();
+
+      try {
+        await sendVerificationEmail(
+          pending.email,
+          pending.verificationCode,
+          pending.username,
+        );
+        return res.status(200).send({ msg: "Verification code sent to your email" });
+      } catch (emailError) {
+        return res.status(503).send({
+          error: emailError.publicMessage || "Failed to send verification email",
+        });
+      }
+    }
+
+    // Supports accounts that were created before pending registration was added.
+    const user = await UserModel.findOne({ email: normalizedEmail });
 
     if (!user) {
       return res.status(404).send({ error: "User not found" });
