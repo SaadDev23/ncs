@@ -28,6 +28,9 @@ export const Post = ({
   const [localComments, setLocalComments] = useState(comments);
   const [localLikeCount, setLocalLikeCount] = useState(Number(text3) || 0);
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingCommentText, setEditingCommentText] = useState("");
+  const [commentActionId, setCommentActionId] = useState(null);
 
   useEffect(() => {
     setLocalComments(comments);
@@ -132,11 +135,7 @@ export const Post = ({
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: userInfo.id,
-          userName: userInfo.username,
-          text: trimmed,
-        }),
+        body: JSON.stringify({ text: trimmed }),
       });
       const result = await response.json();
       if (response.ok && result.comments) {
@@ -154,6 +153,67 @@ export const Post = ({
       toast.error(err.message || "Failed to add comment");
     } finally {
       setIsSubmittingComment(false);
+    }
+  };
+
+  const commentKey = (comment, index) => String(comment.commentId || comment._id || index);
+  const ownsComment = (comment) =>
+    userInfo?.id && String(comment.userId) === String(userInfo.id);
+
+  const saveEditedComment = async (comment, index) => {
+    const trimmed = editingCommentText.trim();
+    const key = commentKey(comment, index);
+    if (!trimmed) {
+      toast.error("Comment cannot be empty");
+      return;
+    }
+
+    setCommentActionId(key);
+    try {
+      const response = await fetch(
+        `http://localhost:8080/posts/${idd}/comment/${encodeURIComponent(key)}`,
+        {
+          method: "PATCH",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: trimmed }),
+        },
+      );
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.message || "Failed to edit comment");
+      setLocalComments(result.comments || []);
+      setEditingCommentId(null);
+      setEditingCommentText("");
+      toast.success("Comment updated", { autoClose: 900, hideProgressBar: true, position: "top-center" });
+    } catch (error) {
+      toast.error(error.message || "Failed to edit comment");
+    } finally {
+      setCommentActionId(null);
+    }
+  };
+
+  const deleteComment = async (comment, index) => {
+    const key = commentKey(comment, index);
+    if (!window.confirm("Delete this comment?")) return;
+
+    setCommentActionId(key);
+    try {
+      const response = await fetch(
+        `http://localhost:8080/posts/${idd}/comment/${encodeURIComponent(key)}`,
+        { method: "DELETE", credentials: "include" },
+      );
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.message || "Failed to delete comment");
+      setLocalComments(result.comments || []);
+      if (editingCommentId === key) {
+        setEditingCommentId(null);
+        setEditingCommentText("");
+      }
+      toast.success("Comment deleted", { autoClose: 900, hideProgressBar: true, position: "top-center" });
+    } catch (error) {
+      toast.error(error.message || "Failed to delete comment");
+    } finally {
+      setCommentActionId(null);
     }
   };
 
@@ -213,15 +273,47 @@ export const Post = ({
       </div>
       <div className="post-comments-section">
         <div className="post-comments-list">
-          {localComments.map((c, idx) => (
-            <div key={idx} className="post-comment-item">
+          {localComments.map((c, idx) => {
+            const key = commentKey(c, idx);
+            const isEditing = editingCommentId === key;
+            const canEdit = ownsComment(c);
+            const canDelete = canEdit || userInfo?.role === "admin";
+
+            return (
+            <div key={key} className="post-comment-item">
               <span className="post-comment-author">{c.userName}:</span>
-              <span className="post-comment-text">{c.text}</span>
+              {isEditing ? (
+                <input
+                  className="post-comment-edit-input"
+                  value={editingCommentText}
+                  onChange={(event) => setEditingCommentText(event.target.value)}
+                  maxLength="1000"
+                  autoFocus
+                />
+              ) : (
+                <span className="post-comment-text">{c.text}</span>
+              )}
               <span className="post-comment-date">
                 {c.createdAt ? new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeStyle: "short" }).format(new Date(c.createdAt)) : ""}
               </span>
+              {(canEdit || canDelete) && (
+                <span className="post-comment-actions">
+                  {isEditing ? (
+                    <>
+                      <button type="button" onClick={() => saveEditedComment(c, idx)} disabled={commentActionId === key}>Save</button>
+                      <button type="button" onClick={() => { setEditingCommentId(null); setEditingCommentText(""); }} disabled={commentActionId === key}>Cancel</button>
+                    </>
+                  ) : (
+                    <>
+                      {canEdit && <button type="button" onClick={() => { setEditingCommentId(key); setEditingCommentText(c.text); }}>Edit</button>}
+                      {canDelete && <button type="button" className="delete-comment-button" onClick={() => deleteComment(c, idx)} disabled={commentActionId === key}>Delete</button>}
+                    </>
+                  )}
+                </span>
+              )}
             </div>
-          ))}
+            );
+          })}
         </div>
         <form onSubmit={handleAddComment} className="post-comment-form">
           <input

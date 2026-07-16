@@ -3,6 +3,18 @@ import { Types } from 'mongoose';
 const {ObjectId} = Types
 import UserModel from "../model/User.model.js";
 
+async function authenticatedUser(req) {
+    const userId = req.user?.id || req.session?.user?.id;
+    if (!userId) return null;
+    return UserModel.findById(userId).select("_id username role").lean();
+}
+
+function findCommentIndex(comments, commentId) {
+    return comments.findIndex((comment, index) =>
+        String(comment.commentId || comment._id || index) === String(commentId),
+    );
+}
+
 export const createPost = async (req, res) => {
     try {
         const { description, userId, userName } = req.body;
@@ -124,15 +136,20 @@ export const getUserPosts = async (req, res) => {
 export const addComment = async (req, res) => {
     try {
         const { id } = req.params;
-        const { userId, userName, text } = req.body;
+        const { text } = req.body;
+        const user = await authenticatedUser(req);
 
-        if (!userId || !userName || !text || !text.trim()) {
-            return res.status(400).json({ message: 'userId, userName and comment text are required' });
+        if (!user) {
+            return res.status(401).json({ message: "Please log in to comment." });
+        }
+        if (!text || !text.trim()) {
+            return res.status(400).json({ message: "Comment text is required." });
         }
 
         const comment = {
-            userId,
-            userName,
+            commentId: new Types.ObjectId().toString(),
+            userId: user._id.toString(),
+            userName: user.username,
             text: text.trim(),
             createdAt: new Date(),
         };
@@ -151,6 +168,65 @@ export const addComment = async (req, res) => {
     } catch (err) {
         console.error('Error adding comment:', err);
         res.status(500).json({ message: err.message });
+    }
+};
+
+/** Edit a comment. Only its author may edit it. */
+export const editComment = async (req, res) => {
+    try {
+        const { id, commentId } = req.params;
+        const { text } = req.body;
+        const user = await authenticatedUser(req);
+
+        if (!user) return res.status(401).json({ message: "Please log in to edit a comment." });
+        if (!text || !text.trim()) return res.status(400).json({ message: "Comment text is required." });
+
+        const post = await Post.findById(id);
+        if (!post) return res.status(404).json({ message: "Post not found." });
+
+        const commentIndex = findCommentIndex(post.comments || [], commentId);
+        if (commentIndex < 0) return res.status(404).json({ message: "Comment not found." });
+        if (String(post.comments[commentIndex].userId) !== String(user._id)) {
+            return res.status(403).json({ message: "You can only edit your own comments." });
+        }
+
+        post.comments[commentIndex].text = text.trim();
+        post.comments[commentIndex].updatedAt = new Date();
+        post.markModified("comments");
+        await post.save();
+        return res.status(200).json({ comments: post.comments });
+    } catch (err) {
+        console.error("Error editing comment:", err);
+        return res.status(500).json({ message: "Unable to edit comment." });
+    }
+};
+
+/** Delete a comment. Its author or an admin may delete it. */
+export const deleteComment = async (req, res) => {
+    try {
+        const { id, commentId } = req.params;
+        const user = await authenticatedUser(req);
+
+        if (!user) return res.status(401).json({ message: "Please log in to delete a comment." });
+
+        const post = await Post.findById(id);
+        if (!post) return res.status(404).json({ message: "Post not found." });
+
+        const commentIndex = findCommentIndex(post.comments || [], commentId);
+        if (commentIndex < 0) return res.status(404).json({ message: "Comment not found." });
+
+        const isCommentOwner = String(post.comments[commentIndex].userId) === String(user._id);
+        if (!isCommentOwner && user.role !== "admin") {
+            return res.status(403).json({ message: "You can only delete your own comments." });
+        }
+
+        post.comments.splice(commentIndex, 1);
+        post.markModified("comments");
+        await post.save();
+        return res.status(200).json({ comments: post.comments });
+    } catch (err) {
+        console.error("Error deleting comment:", err);
+        return res.status(500).json({ message: "Unable to delete comment." });
     }
 };
 
