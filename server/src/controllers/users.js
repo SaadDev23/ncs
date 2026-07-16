@@ -5,7 +5,12 @@ import UserModel from "../model/User.model.js";
 export const getUser = async (req,res) => {
     try{
         const {id} = req.params;
-        const user = await UserModel.findById(id);
+        const user = await UserModel.findById(id)
+            .select("_id username role profilePicture aboutme firstName lastName location createdAt")
+            .lean();
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
         res.status(200).json(user);
     } catch(err){
         res.status(404).json({message: err.message});

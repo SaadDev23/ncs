@@ -1,8 +1,21 @@
 .box {
-  height: 100vh !important;
+  min-height: 100vh !important;
+  height: auto !important;
   width: 100% !important;
   background-color: #1E252B;
-  padding-bottom: 1200px
+  padding-bottom: 80px;
+}
+
+.profile-state {
+  color: var(--text-primary);
+  max-width: 821px;
+  margin: 0 auto;
+  padding: 48px 20px;
+  text-align: center;
+}
+
+.profile-error {
+  color: #ff8b66;
 }
 
 
@@ -14,6 +27,54 @@
   align-items: center;
   margin: 0 auto;
   margin-left: 33%;
+}
+
+.profile-public-details {
+  color: #b9bbbe;
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  min-width: 360px;
+}
+
+.profile-public-details strong {
+  color: #ffffff;
+}
+
+.profile-posts-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 821px;
+  margin: -80px auto 0;
+  padding: 0 16px;
+}
+
+.profile-posts-feed h2 {
+  color: #ffffff;
+  font-size: 22px;
+  margin: 0 0 4px;
+}
+
+.profile-no-posts {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .profile-public-details {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .profile-posts-feed {
+    margin-top: 20px;
+  }
 }
 
 .box .overlap {
