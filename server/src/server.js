@@ -81,7 +81,16 @@ const storage = multer.diskStorage({
 });
 
 /** middlewares */
-app.use(express.json());
+// Profile photos are stored as Base64 strings. The client limits images to 2 MB.
+app.use(express.json({ limit: "5mb" }));
+app.use((error, req, res, next) => {
+  if (error?.type === "entity.too.large" || error?.status === 413) {
+    return res.status(413).json({
+      error: "Profile image is too large. Please choose an image smaller than 2 MB.",
+    });
+  }
+  return next(error);
+});
 app.disable("x-powered-by"); //less hackers know about our stack
 
 const port = process.env.PORT || 8080;

@@ -751,10 +751,36 @@ export async function updateUserProfile(req, res) {
   // console.log(profilePicture)
   // console.log('inside user profile controller')
   try {
-    // Update the user's profile picture in MongoDB
-    await UserModel.findByIdAndUpdate(userId, { profilePicture });
+    const authenticatedUser = await requestUser(req);
+    if (!authenticatedUser) {
+      return res.status(401).json({ error: "Please log in to update your profile picture." });
+    }
+    if (!userId || String(authenticatedUser.id) !== String(userId)) {
+      return res.status(403).json({ error: "You can only update your own profile picture." });
+    }
+    if (typeof profilePicture !== "string" || !profilePicture.trim()) {
+      return res.status(400).json({ error: "Please choose a valid image." });
+    }
+    if (profilePicture.length > 4 * 1024 * 1024) {
+      return res.status(413).json({
+        error: "Profile image is too large. Please choose an image smaller than 2 MB.",
+      });
+    }
 
-    res.status(200).json({ message: "Profile picture updated successfully" });
+    // Update the user's profile picture in MongoDB
+    const user = await UserModel.findByIdAndUpdate(
+      userId,
+      { profilePicture },
+      { new: true },
+    );
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    res.status(200).json({
+      message: "Profile picture updated successfully",
+      profilePicture: user.profilePicture,
+    });
     if (String(req.session?.user?.id) === String(userId)) {
       req.session.user.profilepicture = profilePicture;
     }

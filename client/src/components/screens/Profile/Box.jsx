@@ -56,14 +56,26 @@ export default function Box() {
   const handleProfilePictureChange = async (event) => {
     const file = event.target.files[0];
 
-    if (file) {
-      try {
-        const base64Image = await convertImageToBase64(file);
-        await updateProfilePicture(base64Image);
-        // Optionally, you can update the UI to show the new profile picture.
-      } catch (error) {
-        console.error("Error handling profile picture change:", error);
-      }
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please choose an image file.");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Please choose an image smaller than 2 MB.");
+      event.target.value = "";
+      return;
+    }
+
+    try {
+      const base64Image = await convertImageToBase64(file);
+      await updateProfilePicture(base64Image);
+    } catch (error) {
+      console.error("Error handling profile picture change:", error);
+      toast.error(error.message || "Unable to upload profile picture.");
+    } finally {
+      event.target.value = "";
     }
   };
 
@@ -84,6 +96,10 @@ export default function Box() {
   };
 
   const updateProfilePicture = async (base64Image) => {
+    if (!userInfo?.id) {
+      throw new Error("Please log in again before changing your profile picture.");
+    }
+
     try {
       const response = await fetch("http://localhost:8080/api/update-profile-picture", {
         method: 'PUT',
@@ -94,36 +110,24 @@ export default function Box() {
         body: JSON.stringify({ userId: userInfo.id, profilePicture: base64Image }),
       });
 
+      const result = await response.json().catch(() => ({}));
       if (response.ok) {
+        setUserInfo((currentUser) => ({
+          ...currentUser,
+          profilepicture: result.profilePicture || base64Image,
+        }));
         toast.success("Profile picture updated successfully",{
           autoClose : 200,
           hideProgressBar: true,
           position:"top-center"
         })
-        // console.log('Profile picture updated successfully');
-       setTimeout(() => {
-         navigate(0)
-       }, 1500);
+        return;
       } else {
-
-        console.error('Failed to update profile picture');
-        toast.error('Failed to update profile picture', {
-          position: "top-center",
-          autoClose: 200,
-          hideProgressBar: true,
-          closeOnClick: true,
-          theme: "colored"
-        });
+        throw new Error(result.error || "Failed to update profile picture.");
       }
     } catch (error) {
-      toast.error('File Too Large', {
-        position: "top-center",
-        autoClose: 200,
-        hideProgressBar: true,
-        closeOnClick: true,
-        theme: "colored"
-      });
       console.error('Error updating profile picture', error);
+      throw error;
     }
   };
 
