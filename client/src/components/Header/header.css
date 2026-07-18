@@ -40,11 +40,12 @@
 
 .header .logo {
   flex: 0 0 auto;
-  background: #ffffff;
-  border-radius: 6px;
-  height: 28px;
-  width: 28px;
-  object-fit: contain;
+  background: #000000;
+  border-radius: 4px;
+  height: 30px;
+  width: 104px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .header .hipnode {

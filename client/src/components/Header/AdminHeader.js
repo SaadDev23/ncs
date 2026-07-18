@@ -74,7 +74,7 @@ export const AdminHeader = ({ page }) => {
       <div className="main">
         <div className="div-2">
           <Link to="/admin/home" className="brand-link" aria-label="Go to admin homepage">
-            <img className="logo" alt="Neo Code Syndicate logo" src="/imgHome/logo-1.png" />
+            <img className="logo" alt="Neo Code Syndicate logo" src="/imgHome/ncs-metallic-logo.png" />
             <div className="hipnode">Neo Code</div>
           </Link>
         </div>
