@@ -13,6 +13,8 @@ function RegisterationModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
     const [member3, setMember3] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [onCompetitionsTitles, setonCompetitionsTitles] = useState([]);
+    const [validationError, setValidationError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         const fetchOnSiteCompeitionsTitles = async () => {
@@ -28,23 +30,50 @@ function RegisterationModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
         fetchOnSiteCompeitionsTitles()
     }, []);
 
-    const handleSubmit = () => {
+    useEffect(() => {
+        if (isOpen && selectedTag) {
+            setTitle(selectedTag);
+        }
+    }, [isOpen, selectedTag]);
+
+    const handleSubmit = async () => {
         const RegisterationData = {
-            title,
-            teamName,
-            member1,
-            member2,
-            member3,
-            phoneNumber
+            title: title.trim(),
+            teamName: teamName.trim(),
+            member1: member1.trim(),
+            member2: member2.trim(),
+            member3: member3.trim(),
+            phoneNumber: phoneNumber.trim()
         };
-        setTitle("");
-        setTeamName("");
-        setMember1("");
-        setMember2("");
-        setMember3("");
-        setPhoneNumber("");
-        onSubmit(RegisterationData);
-        onClose();
+
+        const labels = {
+            title: "competition",
+            teamName: "team name",
+            member1: "member 1 ID",
+            member2: "member 2 ID",
+            member3: "member 3 ID",
+            phoneNumber: "phone number",
+        };
+        const missingFields = Object.entries(RegisterationData)
+            .filter(([, value]) => !value)
+            .map(([field]) => labels[field]);
+
+        if (missingFields.length > 0) {
+            setValidationError(`Please complete: ${missingFields.join(", ")}.`);
+            return;
+        }
+
+        setValidationError("");
+        setIsSubmitting(true);
+        try {
+            const submitted = await onSubmit(RegisterationData);
+            if (submitted !== false) {
+                clearFields();
+                onClose();
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const clearFields = () => {
@@ -54,6 +83,7 @@ function RegisterationModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
         setMember2("");
         setMember3("");
         setPhoneNumber("");
+        setValidationError("");
     };
 
     return (
@@ -71,6 +101,7 @@ function RegisterationModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
                                 as="select"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
+                                required
                             >
                                   <option value="" disabled>Select Competition</option>
                                 {onCompetitionsTitles.map((competition) => (
@@ -87,6 +118,7 @@ function RegisterationModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
                                 type="text"
                                 value={teamName}
                                 onChange={(e) => setTeamName(e.target.value)}
+                                required
                             />
                         </Form.Group>
                         <Form.Group controlId="member1">
@@ -96,6 +128,7 @@ function RegisterationModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
                                 type="text"
                                 value={member1}
                                 onChange={(e) => setMember1(e.target.value)}
+                                required
                             />
                         </Form.Group>
                         <Form.Group controlId="member2">
@@ -105,6 +138,7 @@ function RegisterationModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
                                 type="text"
                                 value={member2}
                                 onChange={(e) => setMember2(e.target.value)}
+                                required
                             />
                         </Form.Group>
                         <Form.Group controlId="member3">
@@ -114,6 +148,7 @@ function RegisterationModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
                                 type="text"
                                 value={member3}
                                 onChange={(e) => setMember3(e.target.value)}
+                                required
                             />
                         </Form.Group>
                         <Form.Group controlId="phoneNumber">
@@ -123,16 +158,22 @@ function RegisterationModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
                                 type="text"
                                 value={phoneNumber}
                                 onChange={(e) => setPhoneNumber(e.target.value)}
+                                required
                             />
                         </Form.Group>
+                        {validationError && (
+                            <div className="registration-validation-error" role="alert">
+                                {validationError}
+                            </div>
+                        )}
                     </Form>
                 </Modal.Body>
                 <Modal.Footer className="button-container">
-                    <Button variant="secondary" onClick={() => { onClose(); clearFields(); }}>
+                    <Button variant="secondary" onClick={() => { onClose(); clearFields(); }} disabled={isSubmitting}>
                         Cancel
                     </Button>
-                    <Button variant="primary" onClick={handleSubmit}>
-                        Submit
+                    <Button variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
+                        {isSubmitting ? "Registering..." : "Submit"}
                     </Button>
                 </Modal.Footer>
             </Modal>

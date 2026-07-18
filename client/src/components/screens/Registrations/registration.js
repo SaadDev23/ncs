@@ -18,6 +18,7 @@ export default function RegistrationPage() {
   const navigate = useNavigate();
   const [userinfo, setUserInfo] = useState("")
   const [modalMode, setModalMode] = useState(""); // State to store the modal mode
+  const [selectedCompetitionTitle, setSelectedCompetitionTitle] = useState("");
   const [user, setUser] = useState()
 
   let role;
@@ -60,11 +61,12 @@ export default function RegistrationPage() {
     fetchOnsiteCompetition();
     fetchUser();
   }, []);
-  const openModal = (mode) => {
+  const openModal = (mode, competitionTitle = "") => {
     console.log(mode)
 
     setModalMode(mode);
     if (mode === "register-onsite-competition") {
+      setSelectedCompetitionTitle(competitionTitle);
       setIsRegisterationModalOpen(true);
     } else {
       setIsModalOpen(true);
@@ -142,6 +144,7 @@ export default function RegistrationPage() {
         setTimeout(() => {
           navigate(0);
         }, 1000);
+        return true;
 
       } else {
         // Handle errors
@@ -153,6 +156,7 @@ export default function RegistrationPage() {
           closeOnClick: true,
           theme: "colored"
         });
+        return false;
       }
     } catch (error) {
       toast.error(error.message, {
@@ -163,6 +167,7 @@ export default function RegistrationPage() {
         theme: "colored"
       })
       console.error("Error2:", error);
+      return false;
     }
   };
 
@@ -174,6 +179,7 @@ export default function RegistrationPage() {
           onClose={closeModal}
           onSubmit={handleRegisterationModalSubmit}
           mode={modalMode} // Pass the modal mode as a prop
+          selectedTag={selectedCompetitionTitle}
         />
       </>
       <Header page="rh"></Header>
@@ -194,7 +200,7 @@ export default function RegistrationPage() {
                   <div className="text-wrapper-3">*</div>
                   <img className="logo" alt="Chelsea Logo" src="/imgHome/rectangle-32-5.png" />
                   <div className="text-wrapper-4" style={{ color: (item.max_registerations - item.registerations_completed) < 10 ? "red" : "white" }}>{item.title}</div>
-                  <div style={{ color: "red", cursor: "pointer" }} onClick={() => openModal("register-onsite-competition")} >Register Now</div>
+                  <div style={{ color: "red", cursor: "pointer" }} onClick={() => openModal("register-onsite-competition", item.title)} >Register Now</div>
                 </div>
                 <div className="poin">
                   <div className="text-wrapper-2" style={{ color: (item.max_registerations - item.registerations_completed) < 10 ? "red" : "white" }}>{item.registerations_completed}</div>

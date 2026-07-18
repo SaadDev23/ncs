@@ -70,6 +70,17 @@
   color: black;
 }
 
+.registration-validation-error {
+  margin-top: 4px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 77, 0, 0.55);
+  border-radius: 6px;
+  background: rgba(255, 77, 0, 0.12);
+  color: #ff8a5c;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 @media (max-width: 768px) {
   .modal-dialog {
     margin: 16px;

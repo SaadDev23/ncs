@@ -872,10 +872,25 @@ export async function deleteOnSiteCompetition(req, res) {
 
 /**POST : http://localhost:8080/api/register-onsite */
 export async function registerForOnsiteCompetition(req, res) {
-  const { title, member1, member2, member3, phoneNumber, teamName } = req.body;
-  if (!title || !member1 || !member2 || !member3 || !phoneNumber || !teamName) {
-    return res.status(400).json({ error: "Missing required fields" });
+  const registrationData = {
+    title: String(req.body.title || "").trim(),
+    member1: String(req.body.member1 || "").trim(),
+    member2: String(req.body.member2 || "").trim(),
+    member3: String(req.body.member3 || "").trim(),
+    phoneNumber: String(req.body.phoneNumber || req.body.phone_number || "").trim(),
+    teamName: String(req.body.teamName || req.body.team_name || "").trim(),
+  };
+  const missingFields = Object.entries(registrationData)
+    .filter(([, value]) => !value)
+    .map(([field]) => field);
+
+  if (missingFields.length > 0) {
+    return res.status(400).json({
+      error: `Please complete: ${missingFields.join(", ")}`,
+      missingFields,
+    });
   }
+  const { title, member1, member2, member3, phoneNumber, teamName } = registrationData;
   let registrationSlotReserved = false;
   try {
     const onsiteComp = await onSiteCompetitionsModel.findOneAndUpdate(
