@@ -258,7 +258,7 @@ const handleModal2Submit = async (competitionData) => {
         <aside className="admin-actions">
           <p className="admin-eyebrow">Dashboard</p>
           <h1>Manage content</h1>
-          <p className="admin-copy">Create competitions, past papers, and on-site events from one place.</p>
+          <p className="admin-copy">Create competitions, learning resources, and on-site events from one place.</p>
           <button
             type="button"
             className="button text-wrapper-3"
@@ -271,7 +271,7 @@ const handleModal2Submit = async (competitionData) => {
             className="button text-wrapper-3"
             onClick={() => openModal("pastpaper")} // Specify the mode when clicking "Add Pastpaper"
           >
-            Add Pastpaper
+            Add Resource
           </button>
           <button
             type="button"

@@ -5,6 +5,15 @@ import Form from 'react-bootstrap/Form';
 
 import "./style.css";
 
+const COMPETITION_CATEGORIES = ["Local", "Regional", "Worldwide"];
+const RESOURCE_CATEGORIES = [
+  "Past Paper",
+  "Lecture Notes",
+  "Programming Tutorial",
+  "Practice Problems",
+  "Interview Preparation",
+];
+
 function MyModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
   const [title, setTitle] = useState("");
   const [name, setName] = useState("");
@@ -13,6 +22,10 @@ function MyModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
   const [selectedTagLocal, setSelectedTagLocal] = useState(selectedTag || ""); // Set the initial value based on the selectedTag prop
+  const isCompetition = mode === "competition";
+  const categoryOptions = isCompetition
+    ? COMPETITION_CATEGORIES
+    : RESOURCE_CATEGORIES;
 
   const handleSubmit = () => {
     const competitionData = {
@@ -50,21 +63,21 @@ function MyModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
     <div className="container">
       <Modal show={isOpen} onHide={onClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{mode === "competition" ? "Upload A Competition" : "Upload A Past Paper"}</Modal.Title>
+          <Modal.Title>{isCompetition ? "Upload a Competition" : "Add a Learning Resource"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group controlId="title">
-              <Form.Label>{mode === "competition" ? "Title:" : "Name:"}</Form.Label>
+              <Form.Label>{isCompetition ? "Title:" : "Resource title:"}</Form.Label>
               <Form.Control
                 className="input-container"
                 type="text"
-                value={mode === "competition" ? title : name}
-                onChange={(e) => { mode === "competition" ? setTitle(e.target.value) : setName(e.target.value) }}
+                value={isCompetition ? title : name}
+                onChange={(e) => { isCompetition ? setTitle(e.target.value) : setName(e.target.value) }}
               />
             </Form.Group>
             <Form.Group controlId="link">
-              <Form.Label>Link:</Form.Label>
+              <Form.Label>{isCompetition ? "Link:" : "Resource link:"}</Form.Label>
               <Form.Control
                 className="input-container"
                 type="text"
@@ -72,7 +85,7 @@ function MyModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
                 onChange={(e) => setLink(e.target.value)}
               />
             </Form.Group>
-          {mode === "competition" && (
+          {isCompetition && (
             <Form.Group controlId="location">
               <Form.Label>{"Location:"}</Form.Label>
               <Form.Control
@@ -92,9 +105,9 @@ function MyModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
                 onChange={(e) => setDate(e.target.value)}
               />
             </Form.Group>
-            {/* Dropdown for selecting tag */}
+            {/* Keep competition scope separate from learning-resource categories. */}
             <Form.Group controlId="tag">
-              <Form.Label>Tag:</Form.Label>
+              <Form.Label>{isCompetition ? "Competition scope:" : "Resource category:"}</Form.Label>
               <Form.Control
                 as="select"
                 className="input-container"
@@ -104,10 +117,10 @@ function MyModal({ isOpen, onClose, onSubmit, mode, selectedTag }) {
                   setkind(e.target.value); // Assuming kind should be updated based on the tag value
                 }}
               >
-                <option value="">Select Tag</option>
-                <option value="Local">Local</option>
-                <option value="Regional">Regional</option>
-                <option value="Worldwide">Worldwide</option>
+                <option value="">{isCompetition ? "Select scope" : "Select category"}</option>
+                {categoryOptions.map((category) => (
+                  <option value={category} key={category}>{category}</option>
+                ))}
               </Form.Control>
             </Form.Group>
           </Form>

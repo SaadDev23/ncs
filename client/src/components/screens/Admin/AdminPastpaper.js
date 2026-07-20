@@ -73,10 +73,10 @@ const PastPapers = () => {
         <section className="admin-papers-heading">
           <div>
             <p className="admin-papers-eyebrow">Admin library</p>
-            <h1>Past papers</h1>
+            <h1>Learning resources</h1>
             <p>Review and remove resources that are no longer needed.</p>
           </div>
-          <div className="admin-papers-count">{data.length} {data.length === 1 ? 'paper' : 'papers'}</div>
+          <div className="admin-papers-count">{data.length} {data.length === 1 ? 'resource' : 'resources'}</div>
         </section>
 
         <div className="admin-past-papers-table-wrap">
@@ -87,7 +87,7 @@ const PastPapers = () => {
                 <th>Name</th>
                 <th>Date</th>
                 <th>Link</th>
-                <th>Type</th>
+                <th>Category</th>
                 <th>Actions</th>
               </tr>
             </thead>

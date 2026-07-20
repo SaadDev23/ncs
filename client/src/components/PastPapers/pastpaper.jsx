@@ -50,7 +50,7 @@ const PastPapers = () => {
                             <th>Name</th>
                             <th>Date</th>
                             <th>Link</th>
-                            <th>Scope</th>
+                            <th>Category</th>
                         </tr>
                     </thead>
                     <tbody>
