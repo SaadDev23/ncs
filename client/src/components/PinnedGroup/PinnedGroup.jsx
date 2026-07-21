@@ -34,8 +34,7 @@ export const PinnedGroup = ({
         const filteredData = result.result.filter(
           (user) => user.country === "Pakistan" && user.city === "Karachi"
         );
-        const top5Data = filteredData.slice(0, 5);
-        setData(top5Data);
+        setData(filteredData);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching Codeforces data:", error);
@@ -59,9 +58,9 @@ export const PinnedGroup = ({
         {isLoading ? (
           <p>Loading...</p>
         ) : (
-          <div>
+          <div className="rankings-scroll" role="list" aria-label="Codeforces rankings" tabIndex="0">
             {data.map((user) => (
-              <div id="user" className="tag-2">
+              <div id="user" className="tag-2" key={user.handle}>
                 <img id="userIcon" alt="icon9" src={user.titlePhoto} />
                 <div className="name-2">
                 <div className="javascript-2">{user.handle}</div>
@@ -71,6 +70,9 @@ export const PinnedGroup = ({
             ))}
           </div>
         )}
+        <Link to="/rankings" className="rankings-footer">
+          View All Rankings <span aria-hidden="true">→</span>
+        </Link>
       </div>
     </div>
     //   </div>

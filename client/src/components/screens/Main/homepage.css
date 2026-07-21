@@ -21,6 +21,7 @@
 .dashboard-layout .sidebar-left {
   position: sticky;
   top: 72px;
+  align-self: start;
   height: fit-content;
 }
 
@@ -31,7 +32,90 @@
 .dashboard-layout .sidebar-right {
   position: sticky;
   top: 72px;
+  align-self: start;
   height: fit-content;
+}
+
+.dashboard-layout .dashboard-sidebar-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.dashboard-layout .onsite-card,
+.dashboard-layout .pinned-group.dark-18-on {
+  max-height: clamp(250px, 37vh, 330px);
+}
+
+.dashboard-layout .online-card,
+.dashboard-layout .hackernews-sidebar {
+  max-height: clamp(270px, 40vh, 360px);
+}
+
+.dashboard-layout .sidebar-card-header {
+  flex: 0 0 auto;
+  margin-bottom: 8px;
+  padding: 2px 4px 0;
+}
+
+.dashboard-layout .sidebar-card-scroll,
+.dashboard-layout .rankings-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+  scrollbar-color: var(--border-hover) transparent;
+  scrollbar-width: thin;
+}
+
+.dashboard-layout .sidebar-card-scroll:focus-visible,
+.dashboard-layout .rankings-scroll:focus-visible {
+  border-radius: var(--radius-sm);
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.dashboard-layout .sidebar-card-scroll::-webkit-scrollbar,
+.dashboard-layout .rankings-scroll::-webkit-scrollbar,
+.dashboard-layout .hackernews-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.dashboard-layout .sidebar-card-scroll::-webkit-scrollbar-thumb,
+.dashboard-layout .rankings-scroll::-webkit-scrollbar-thumb,
+.dashboard-layout .hackernews-list::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: var(--radius-full);
+}
+
+.dashboard-layout .sidebar-card-footer,
+.dashboard-layout .rankings-footer {
+  align-items: center;
+  border-top: 1px solid var(--border);
+  color: var(--accent);
+  display: flex;
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 600;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 9px 4px 1px;
+  text-decoration: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.dashboard-layout .sidebar-card-footer:hover,
+.dashboard-layout .rankings-footer:hover {
+  color: var(--accent-hover);
+}
+
+.dashboard-layout .sidebar-card-status {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin: 0;
+  padding: 12px 4px;
 }
 
 /* Feed wrapper */
@@ -113,6 +197,10 @@
   }
   .dashboard-layout .sidebar-left {
     display: none;
+  }
+
+  .dashboard-layout .sidebar-right {
+    top: 68px;
   }
 }
 

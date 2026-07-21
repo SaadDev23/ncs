@@ -6,6 +6,9 @@
   width: 100% !important;
   box-sizing: border-box;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .hackernews-header {
@@ -13,6 +16,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+  flex: 0 0 auto;
 }
 
 .hackernews-title {
@@ -66,6 +70,13 @@
 .hackernews-list {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 3px;
+  scrollbar-color: var(--border-hover) transparent;
+  scrollbar-width: thin;
 }
 
 .hackernews-item {
@@ -141,6 +152,7 @@
   text-decoration: none;
   border-top: 1px solid var(--border);
   transition: opacity var(--transition-fast);
+  flex: 0 0 auto;
 }
 
 .hackernews-explore:hover {

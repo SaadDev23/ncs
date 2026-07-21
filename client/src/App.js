@@ -13,6 +13,7 @@ import Notification from "./components/Notification/Notification.tsx";
 import RegistrationPage from "./components/screens/Registrations/registration.js";
 import Rankings from "./components/screens/Rankings/Rankings";
 import News from "./components/screens/News/News";
+import OnlineCompetitions from "./components/screens/OnlineCompetitions/OnlineCompetitions";
 import AdminLogin from "./components/screens/Admin/AdminLogin.js";
 import AdminPastpaper from "./components/screens/Admin/AdminPastpaper.js";
 import EmailVerification from "./components/screens/EmailVerification/EmailVerification";
@@ -64,6 +65,7 @@ export default function App() {
             />
             <Route path="/rankings" element={<Rankings />} />
             <Route path="/news" element={<News />} />
+            <Route path="/online-competitions" element={<OnlineCompetitions />} />
             <Route path="/admin/pastpaper" element={<AdminPastpaper />} />
           </>
         )}

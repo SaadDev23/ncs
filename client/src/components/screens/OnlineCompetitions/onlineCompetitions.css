@@ -1,0 +1,63 @@
+.online-competitions-page {
+  background: var(--bg-primary);
+  min-height: calc(100vh - 56px);
+  padding: 48px 24px 80px;
+}
+
+.online-competitions-heading {
+  margin: 0 auto 28px;
+  max-width: 1100px;
+}
+
+.online-competitions-heading p {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+
+.online-competitions-heading h1 {
+  color: var(--text-primary);
+  font-size: clamp(28px, 4vw, 42px);
+  letter-spacing: -.04em;
+  margin: 0;
+}
+
+.online-competitions-heading span,
+.online-competitions-state {
+  color: var(--text-secondary);
+}
+
+.online-competitions-heading span {
+  display: block;
+  margin-top: 8px;
+}
+
+.online-competitions-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 auto;
+  max-width: 1100px;
+}
+
+.online-competitions-grid > .meetups.dark-46-on {
+  padding: 16px;
+}
+
+.online-competitions-state {
+  margin: 60px auto;
+  max-width: 1100px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .online-competitions-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .online-competitions-page { padding: 28px 16px 48px; }
+  .online-competitions-grid { grid-template-columns: 1fr; }
+}

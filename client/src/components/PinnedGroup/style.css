@@ -13,6 +13,11 @@
   flex-direction: column;
   gap: 12px;
   width: 100%;
+  min-height: 0;
+}
+
+.pinned-group .rankings-scroll {
+  width: 100%;
 }
 
 .pinned-group .title-2 {

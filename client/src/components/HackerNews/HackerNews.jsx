@@ -47,15 +47,15 @@ export const HackerNews = () => {
           LIVE
         </div>
       </div>
-      {isLoading ? (
-        <div className="hackernews-loading">Loading...</div>
-      ) : error ? (
-        <div className="hackernews-loading">{error}</div>
-      ) : articles.length === 0 ? (
-        <div className="hackernews-loading">No recent stories found.</div>
-      ) : (
-        <>
-          <div className="hackernews-list">
+      <div className="hackernews-list">
+        {isLoading ? (
+          <div className="hackernews-loading">Loading...</div>
+        ) : error ? (
+          <div className="hackernews-loading">{error}</div>
+        ) : articles.length === 0 ? (
+          <div className="hackernews-loading">No recent stories found.</div>
+        ) : (
+          <>
             {articles.map((article, index) => (
               <a
                 key={index}
@@ -85,25 +85,25 @@ export const HackerNews = () => {
                 </div>
               </a>
             ))}
-          </div>
-          <Link to="/news" className="hackernews-explore">
-            Explore More
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14" />
-              <path d="M12 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </>
-      )}
+          </>
+        )}
+      </div>
+      <Link to="/news" className="hackernews-explore">
+        Explore More
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M5 12h14" />
+          <path d="M12 5l7 7-7 7" />
+        </svg>
+      </Link>
     </div>
   );
 };
